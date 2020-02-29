@@ -32,7 +32,7 @@ public class WeatherService
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getVersion()
 	{
-		return "0.10 alpha";
+		return "Test Hallo";
 	}
 
 	@GET
