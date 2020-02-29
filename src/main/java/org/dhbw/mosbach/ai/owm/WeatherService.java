@@ -32,8 +32,51 @@ public class WeatherService
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getVersion()
 	{
-		return "Test Hallo";
+		return "0.10 alpha";
 	}
+
+
+	@Path("/test")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getTest()
+	{
+		return "test Test";
+	}
+
+
+	@Path("/testEing/{testData}")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getTestEing(@PathParam("testData") String testData)
+	{
+		return testData;
+	}
+
+	@Path("/testHTML")
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public String getTestHTML()
+	{
+		String test ="<!DOCTYPE html>" +
+				"<html lang='de'> "+
+				"<head>" +
+				"<metacharset='UTF-8'>" +
+				"<title>Eingabefelder</title>" +
+				"</head>"+
+				"<body>"+
+				"<h1>HalloWelts</h1>"+
+				"<ul>"+
+				"<li> eins</li>"+
+				"<li> eins</li>"+
+				"</ul>"+
+				"</body>"+
+				"</html>";
+		return test;
+	}
+
+
+
 
 	@GET
 	@Path("/getMosbachWeatherToday/{testData}")
