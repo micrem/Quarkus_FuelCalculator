@@ -1,5 +1,5 @@
-package petrolAPI;
-
-public class PetrolStationData {
-
-}
+//package petrolAPI;
+//
+//public class PetrolStationData {
+//
+//}
