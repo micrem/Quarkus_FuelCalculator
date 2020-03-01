@@ -1,5 +1,8 @@
 package petrolApiEinfach;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -61,7 +64,43 @@ public class PetrolStationApi {
                 connURL.disconnect();
         }
 
-        System.out.println(apiResultJson);
+        //System.out.println(apiResultJson);
+
+        JSONObject jsonObject = new JSONObject(apiResultJson.toString());
+        System.out.println(jsonObject);
+        JSONArray petrolStationArray = jsonObject.getJSONArray("stations");
+        //System.out.println(petrolStationArray);
+        int test = petrolStationArray.length();
+        for (int i = 0; i <petrolStationArray.length() ; i++) {
+
+            String id= petrolStationArray.getJSONObject(i).getString("id");
+            String name = petrolStationArray.getJSONObject(i).getString("name");
+            String brand= petrolStationArray.getJSONObject(i).getString("brand");
+            String street = petrolStationArray.getJSONObject(i).getString("street");
+            String placeNamer = petrolStationArray.getJSONObject(i).getString("place");
+            double geographicLatitude = petrolStationArray.getJSONObject(i).getDouble("lat");
+            double geographicLongitude= petrolStationArray.getJSONObject(i).getDouble("lng");
+            double distanc  = petrolStationArray.getJSONObject(i).getDouble("dist");
+            if ( petrolStationArray.getJSONObject(i).get("price") == null)
+            {
+
+            }else{
+                double price = petrolStationArray.getJSONObject(i).getDouble("price");
+                boolean isOpen = petrolStationArray.getJSONObject(i).getBoolean("isOpen");
+                String houseNumber = petrolStationArray.getJSONObject(i).getString("houseNumber");
+                int postCode = petrolStationArray.getJSONObject(i).getInt("postCode");
+
+                PetrolStationDat petrolStationDat = new PetrolStationDat(id,name,brand,street,placeNamer,geographicLatitude,geographicLongitude,distanc,price,isOpen,houseNumber,postCode);
+
+                petrolStationDatArrayList.add(petrolStationDat);
+            }
+
+
+
+
+
+        }
+
 
 
     }
