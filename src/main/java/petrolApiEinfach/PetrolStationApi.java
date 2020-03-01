@@ -82,7 +82,7 @@ public class PetrolStationApi {
                 double geographicLatitude = petrolStationArray.getJSONObject(i).getDouble("lat");
                 double geographicLongitude= petrolStationArray.getJSONObject(i).getDouble("lng");
                 double distanc  = petrolStationArray.getJSONObject(i).getDouble("dist");
-                if ( petrolStationArray.getJSONObject(i).get("price") == null)
+                if ( petrolStationArray.getJSONObject(i).isNull("price"))
                 {
 
                 }else{
