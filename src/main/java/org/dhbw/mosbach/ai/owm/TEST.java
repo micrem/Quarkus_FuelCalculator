@@ -2,6 +2,8 @@ package org.dhbw.mosbach.ai.owm;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import petrolApiEinfach.PetrolStationApi;
+import petrolApiEinfach.PetrolTyp;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,14 +14,21 @@ public class TEST {
 
     @POST
     @Produces(MediaType.TEXT_HTML)
-    public String getAPI(@FormParam("searchStringInput") String searchStringInput)
+    public String getAPI(@FormParam("searchLongInput") Double searchLongInput, @FormParam("searchLatInput") Double searchLatInput)
     {
-        String js = "<script>" +
-                "var x = document.getElementById('responseDiv');\n" +
-                "var createResponse = document.createElement('div'); // Create New Element Div\n" +
-                "createResponse.innerHTML = '" + searchStringInput + " CLICK ME!';\n" +
-                "createResponse.setAttribute('id', 'clicker'); \n" +
-                "x.appendChild(createResponse);\n" +
+        StringBuilder strBuilderJS = new StringBuilder();
+        PetrolStationApi petrolStationApi = new PetrolStationApi(searchLatInput,searchLongInput, PetrolTyp.e10);
+        petrolStationApi.search();
+        strBuilderJS.append("<script>" + "var x = document.getElementById('responseDiv');\n");
+        for (int i = 0; i < petrolStationApi.returnObj.getJSONArray("stations").length(); i++) {
+            JSONObject element = petrolStationApi.returnObj.getJSONArray("stations").getJSONObject(i);
+            strBuilderJS.append(printStationStringValue(element, "place"));
+            strBuilderJS.append(printStationStringValue(element, "name"));
+            //strBuilderJS.append(printStationStringValue(element, "price")); //price not a string, generic method won't work
+            strBuilderJS.append("var linebreak = document.createElement('br');\ncreateResponse.appendChild(linebreak);\n");
+        }
+
+        strBuilderJS.append(
                 "\n" +
                 "var heading = document.createElement('h2'); // Heading of Response\n" +
                 "heading.innerHTML = 'Response';\n" +
@@ -35,7 +44,7 @@ public class TEST {
                 "function myFunction() {\n" +
                 "  document.getElementById(\"clicker\").innerHTML = \"YOU CLICKED ME!\";\n" +
                 "}\n" +
-                "</script>\n";
+                "</script>\n");
 
         String returnStr = "\n" +
                 "<!DOCTYPE html>\n" +
@@ -49,7 +58,7 @@ public class TEST {
                 "<h1>Response with JS</h1>\n" +
                 "<div id='responseDiv'></div>\n" +
 
-                js +
+                strBuilderJS.toString() +
 
          //       "<script src='js/form.js'></script>\n" +
                 "</div>\n" +
@@ -58,20 +67,30 @@ public class TEST {
         return returnStr;
     }
 
-
+    private String printStationStringValue(JSONObject element, String var) {
+        StringBuilder stationValue = new StringBuilder();
+        stationValue.append("var createResponse = document.createElement('div');");
+        stationValue.append("createResponse.innerHTML = '").append(var).append(": ").append(element.getString(var)).append("';\n");
+        stationValue.append("x.appendChild(createResponse);\n");
+        stationValue.append("var linebreak = document.createElement('br');\ncreateResponse.appendChild(linebreak);\n");
+        return stationValue.toString();
+    }
 
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getInput()
     {
+        //<input type=number step=any />
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<body>\n" +
                 "<h2>Eingabemaske</h2>\n" +
                 " <form action=\"/test\" method=\"post\"> \n" +
-                "  <label for=\"searchStringInput\">Ort:</label><br>\n" +
-                "  <input type=\"text\" id=\"searchStringInput\" name=\"searchStringInput\" value=\"Mosbach\"><br>  \n" +
+                "  <label for=\"searchStringInput\">long:</label><br>\n" +
+                "  <input type=number step=any id=\"searchLongInput\" name=\"searchLongInput\" value=\"9.120130\"><br>  \n" +
+                "  <label for=\"searchStringInput\">lat:</label><br>\n" +
+                "  <input type=number step=any id=\"searchLatInput\" name=\"searchLatInput\" value=\"49.337470\"><br>  \n" +
                 "<input type=\"submit\" value=\"Submit\">" +
                 "</form>\n" +
                 "</body>\n" +

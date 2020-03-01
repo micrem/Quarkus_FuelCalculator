@@ -1,5 +1,8 @@
 package petrolApiEinfach;
 
+import org.json.JSONObject;
+import org.json.JSONString;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -19,6 +22,7 @@ public class PetrolStationApi {
     private final double geographicLongitude;
     private final PetrolTyp petrolTyp;
     private ArrayList<PetrolStationDat> petrolStationDatArrayList;
+    public JSONObject returnObj;
 
     public PetrolStationApi(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
         this.geographicLatitude = geographicLatitude;
@@ -51,6 +55,7 @@ public class PetrolStationApi {
             while ((read = inputStreamReader.read(buff)) != -1) {
                 apiResultJson.append(buff, 0, read);
             }
+            returnObj = new JSONObject(apiResultJson.toString());
         // muss noch verbessert werden*********************** Siehe FreeTimeActicityExplorer
         } catch (MalformedURLException e) {
             e.printStackTrace();
