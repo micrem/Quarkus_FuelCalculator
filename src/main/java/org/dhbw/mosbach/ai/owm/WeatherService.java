@@ -1,21 +1,15 @@
 package org.dhbw.mosbach.ai.owm;
 
-import java.util.logging.Logger;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
+import com.netflix.hystrix.HystrixCommand;
+import com.netflix.hystrix.HystrixCommandMetrics;
+import com.netflix.hystrix.HystrixCommandMetrics.HealthCounts;
 import org.dhbw.mosbach.ai.model.TemperatureMeasurementUnit;
 import org.dhbw.mosbach.ai.model.UnitConverter;
 import org.dhbw.mosbach.ai.model.WeatherData;
 
-import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.HystrixCommandMetrics;
-import com.netflix.hystrix.HystrixCommandMetrics.HealthCounts;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.logging.Logger;
 
 @Path("/weather")
 @Produces(MediaType.APPLICATION_JSON)
@@ -42,6 +36,61 @@ public class WeatherService
 	{
 		return "0.10 alpha";
 	}
+
+
+	@Path("/test")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getTest()
+	{
+		return "test Test";
+	}
+
+
+	@Path("/testEing/{testData}")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getTestEing(@PathParam("testData") String testData)
+	{
+		return testData;
+	}
+
+	@Path("/testHTML")
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public String getTestHTML()
+	{
+		String test ="<!DOCTYPE html>" +
+				"<html lang='de'> "+
+				"<head>" +
+				"<metacharset='UTF-8'>" +
+				"<title>Eingabefelder</title>" +
+				"</head>"+
+				"<body>"+
+				"<h1>HalloWelts</h1>"+
+				"<ul>"+
+				"<li> eins</li>"+
+				"<li> eins</li>"+
+				"</ul>"+
+				"</body>"+
+				"</html>";
+		return test;
+	}
+//	@GET
+//	@Path("/testTankstellen/{geographischeBreite}/{geographischeLaenge}")
+//	public PetrolStationData getMosbachWeatherToday(@PathParam("geographischeBreite") double geographischeBreite, @PathParam("geographischeLaenge") double geographischeLaenge) throws WeatherServiceException
+//	{
+//		final PetrolClientCommand petrolClientCommand = new PetrolClientCommand(geographischeBreite, geographischeLaenge);
+//		final PetrolStationData petrolStationData = petrolClientCommand.execute();
+//
+//		logMetrics(petrolClientCommand);
+
+//		https://creativecommons.tankerkoenig.de/json/list.php?lat=52.521&lng=13.438&rad=1.5&sort=dist&type=all&apikey=00000000-0000-0000-0000-000000000002
+
+//		return petrolStationData;
+//	}
+
+
 
 	@GET
 	@Path("/getMosbachWeatherToday/{testData}")

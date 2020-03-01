@@ -3,14 +3,13 @@
  */
 package org.dhbw.mosbach.ai.owm;
 
-import java.util.Date;
-
-import org.dhbw.mosbach.ai.model.WeatherData;
-
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.HystrixThreadPoolProperties;
+import org.dhbw.mosbach.ai.model.WeatherData;
+
+import java.util.Date;
 
 /**
  * @author Alexander.Auch
