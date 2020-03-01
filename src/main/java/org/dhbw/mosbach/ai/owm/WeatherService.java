@@ -16,6 +16,7 @@ import org.dhbw.mosbach.ai.model.WeatherData;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandMetrics;
 import com.netflix.hystrix.HystrixCommandMetrics.HealthCounts;
+import petrolAPI.PetrolClientCommand;
 
 @Path("/weather")
 @Produces(MediaType.APPLICATION_JSON)
@@ -74,7 +75,17 @@ public class WeatherService
 				"</html>";
 		return test;
 	}
+	@GET
+	@Path("/testTankstellen/{geographischeBreite}/{geographischeLaenge}")
+	public WeatherData getMosbachWeatherToday(@PathParam("testData") String testData) throws WeatherServiceException
+	{
+		final PetrolClientCommand owmClientCommand = new PetrolClientCommand(OpenWeatherMapClient.OWM_CITY_ID_MOSBACH, testData);
+		final WeatherData weatherData = owmClientCommand.execute();
 
+		logMetrics(owmClientCommand);
+
+		return weatherData;
+	}
 
 
 
@@ -82,7 +93,7 @@ public class WeatherService
 	@Path("/getMosbachWeatherToday/{testData}")
 	public WeatherData getMosbachWeatherToday(@PathParam("testData") String testData) throws WeatherServiceException
 	{
-		final OwmClientCommand owmClientCommand = new OwmClientCommand(OpenWeatherMapClient.OWM_CITY_ID_MOSBACH, testData);
+		final PetrolClientCommand owmClientCommand = new PetrolClientCommand(OpenWeatherMapClient.OWM_CITY_ID_MOSBACH, testData);
 		final WeatherData weatherData = owmClientCommand.execute();
 
 		logMetrics(owmClientCommand);

@@ -1,30 +1,35 @@
 /**
  *
  */
-package org.dhbw.mosbach.ai.owm;
+package petrolAPI;
+
+import java.util.Date;
+
+import org.dhbw.mosbach.ai.model.WeatherData;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.HystrixThreadPoolProperties;
-import org.dhbw.mosbach.ai.model.WeatherData;
-
-import java.util.Date;
+import org.dhbw.mosbach.ai.owm.OpenWeatherMapClient;
 
 /**
  * @author Alexander.Auch
  *
  */
-public class OwmClientCommand extends HystrixCommand<WeatherData>
+public class PetrolClientCommand extends HystrixCommand<WeatherData>
 {
 	private final int cityId;
 	private final String testData;
 
 	private final OpenWeatherMapClient owmClient = new OpenWeatherMapClient(OpenWeatherMapClient.API_KEY);
 
-	public OwmClientCommand(int cityId, String testData)
+	public PetrolClientCommand(int cityId, String testData)
 	{
 		// See https://github.com/Netflix/Hystrix/wiki/Configuration
+
+
+		//** Erstmal nur timeout nach 500 ms gestzt
 
 		// CommandProperties:
 		// Open the Circuit when 30% of requests result in an error.
@@ -38,10 +43,7 @@ public class OwmClientCommand extends HystrixCommand<WeatherData>
 		// Set thread pool number to 2.
 
 		super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("weatherCommands")).andCommandPropertiesDefaults(
-				HystrixCommandProperties.Setter().withCircuitBreakerErrorThresholdPercentage(30)
-				.withCircuitBreakerRequestVolumeThreshold(5).withCircuitBreakerSleepWindowInMilliseconds(3000)
-				.withExecutionTimeoutEnabled(true).withExecutionTimeoutInMilliseconds(500))
-				.andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(2)));
+				HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(500)));
 
 		this.cityId = cityId;
 		this.testData = testData;
