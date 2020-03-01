@@ -24,6 +24,14 @@ public class WeatherService
 {
 	private final Logger logger = Logger.getLogger("root");
 
+	@Path("/form")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getForm()
+	{
+		return "0.10 alpha";
+	}
+
 	/* (non-Javadoc)
 	 * @see org.dhbw.mosbach.ai.WeatherService#getVersion()
 	 */
