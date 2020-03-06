@@ -4,9 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.json.JSONObject;
-import org.json.JSONString;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -26,6 +23,8 @@ public class PetrolStationApi {
     private final double geographicLongitude;
     private final PetrolTyp petrolTyp;
     private ArrayList<PetrolStationDat> petrolStationDatArrayList;
+
+    // nur zum test Public muss dann noch auf private geändetr werden datenzugriff erfolgt über die Klasse Petrol StattionApi
     public JSONObject returnObj;
 
     public PetrolStationApi(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
