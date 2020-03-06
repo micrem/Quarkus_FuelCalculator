@@ -1,4 +1,4 @@
-package petrolApiEinfach;
+package petrolApi;
 
 public enum PetrolTyp {
     e5,
