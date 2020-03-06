@@ -48,7 +48,7 @@ public class PetrolStationApi {
         stringBuilder.append("&apikey="+apiKey);
 
         // nur zum test
-        System.out.println(stringBuilder);
+        //System.out.println(stringBuilder);
         try{
             URL url = new URL(stringBuilder.toString());
             connURL = (HttpURLConnection) url.openConnection();
@@ -61,8 +61,10 @@ public class PetrolStationApi {
             returnObj = new JSONObject(apiResultJson.toString());
         // muss noch verbessert werden*********************** Siehe FreeTimeActicityExplorer
         } catch (MalformedURLException e) {
+            System.err.println("Fehler bei PetrolStation API URL"+e);
             e.printStackTrace();
         } catch (IOException e) {
+            System.err.println("Verbidnungsfehler zu PetrolStation API"+e);
             e.printStackTrace();
         } finally {
             if (connURL != null)
@@ -86,10 +88,8 @@ public class PetrolStationApi {
                 double geographicLatitude = petrolStationArray.getJSONObject(i).getDouble("lat");
                 double geographicLongitude= petrolStationArray.getJSONObject(i).getDouble("lng");
                 double distanc  = petrolStationArray.getJSONObject(i).getDouble("dist");
-                if ( petrolStationArray.getJSONObject(i).isNull("price"))
+                if ( !petrolStationArray.getJSONObject(i).isNull("price"))
                 {
-
-                }else{
                     double price = petrolStationArray.getJSONObject(i).getDouble("price");
                     boolean isOpen = petrolStationArray.getJSONObject(i).getBoolean("isOpen");
                     String houseNumber = petrolStationArray.getJSONObject(i).getString("houseNumber");
