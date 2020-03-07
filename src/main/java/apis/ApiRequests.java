@@ -2,8 +2,12 @@ package apis;
 
 import apis.openCageAPI.Geocode;
 import apis.openCageAPI.OCAPI;
+import apis.openRouteAPI.RouteAPI;
 import apis.petrolApi.PetrolStationApi;
+import apis.petrolApi.PetrolStationDat;
 import apis.petrolApi.PetrolTyp;
+
+import java.util.ArrayList;
 
 public class ApiRequests {
 
@@ -16,6 +20,12 @@ public class ApiRequests {
         Geocode geocodePosition = ocapi.returnGeocodeForAddressInput(streetNum,street,postalCode,city);
         // mit GPS Koordinate Tankstellsuche durchführen
         PetrolStationApi petrolStationApi = new PetrolStationApi();
+        ArrayList<PetrolStationDat> petrolStationDats = petrolStationApi.search(geocodePosition.getLat(),geocodePosition.getLng(),petrolTyp);
+
+
+        // Wegstrecke ermittel
+        RouteAPI routeAPI = new RouteAPI();
+        //RouteData routeData =routeAPI.calculateDistance();
 
 
 
