@@ -1,19 +1,19 @@
 package OpenCageAPI;
 
 public class Geocode {
-    private final String lng;//Laenge
-    private final String lat;//Breite
+    private final double lng;//Laenge
+    private final double lat;//Breite
 
-    public Geocode(String lng, String lat){
+    public Geocode(double lng, double lat){
         this.lng=lng;
         this.lat=lat;
     }
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public String getLng() {
+    public double getLng() {
         return lng;
     }
 }
