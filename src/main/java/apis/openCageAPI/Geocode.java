@@ -1,6 +1,6 @@
 package apis.openCageAPI;
 
-public class Geocode {
+public class Geocode  {
     private final double lng;//Laenge
     private final double lat;//Breite
 
@@ -16,4 +16,7 @@ public class Geocode {
     public double getLng() {
         return lng;
     }
+
+
+
 }

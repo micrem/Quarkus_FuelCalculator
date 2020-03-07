@@ -16,7 +16,7 @@ public class PetrolStationApi {
 
     private static  final  String apiBaseUrl ="https://creativecommons.tankerkoenig.de/json/list.php";
     // maximaler Suchradius ist 25 km
-    private static final float  searchRauisIn_km =25;
+    private static final float  searchRauisIn_km =10;
     private static final String apiKey ="2cf81686-a985-f980-7616-f299465739b1";
     private static final String sort = "dist";
 
