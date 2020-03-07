@@ -1,4 +1,4 @@
-package petrolApi;
+package apis.petrolApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;

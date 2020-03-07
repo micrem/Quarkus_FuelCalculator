@@ -1,4 +1,4 @@
-package OpenCageAPI;
+package apis.OpenCageAPI;
 
 public class Geocode {
     private final double lng;//Laenge

@@ -1,4 +1,4 @@
-package openRouteAPI;
+package apis.openRouteAPI;
 
 public class RouteData {
     private final double distance;

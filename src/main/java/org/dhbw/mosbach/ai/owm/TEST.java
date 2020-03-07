@@ -2,8 +2,8 @@ package org.dhbw.mosbach.ai.owm;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import petrolApi.PetrolStationApi;
-import petrolApi.PetrolTyp;
+import apis.petrolApi.PetrolStationApi;
+import apis.petrolApi.PetrolTyp;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
