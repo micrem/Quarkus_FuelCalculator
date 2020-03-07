@@ -1,11 +1,8 @@
-package petrolApiEinfach;
+package petrolApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import org.json.JSONObject;
-import org.json.JSONString;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,6 +23,8 @@ public class PetrolStationApi {
     private final double geographicLongitude;
     private final PetrolTyp petrolTyp;
     private ArrayList<PetrolStationDat> petrolStationDatArrayList;
+
+    // nur zum test Public muss dann noch auf private geändetr werden datenzugriff erfolgt über die Klasse Petrol StattionApi
     public JSONObject returnObj;
 
     public PetrolStationApi(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
@@ -49,7 +48,7 @@ public class PetrolStationApi {
         stringBuilder.append("&apikey="+apiKey);
 
         // nur zum test
-        System.out.println(stringBuilder);
+        //System.out.println(stringBuilder);
         try{
             URL url = new URL(stringBuilder.toString());
             connURL = (HttpURLConnection) url.openConnection();
@@ -62,8 +61,10 @@ public class PetrolStationApi {
             returnObj = new JSONObject(apiResultJson.toString());
         // muss noch verbessert werden*********************** Siehe FreeTimeActicityExplorer
         } catch (MalformedURLException e) {
+            System.err.println("Fehler bei PetrolStation API URL"+e);
             e.printStackTrace();
         } catch (IOException e) {
+            System.err.println("Verbidnungsfehler zu PetrolStation API"+e);
             e.printStackTrace();
         } finally {
             if (connURL != null)
@@ -87,10 +88,8 @@ public class PetrolStationApi {
                 double geographicLatitude = petrolStationArray.getJSONObject(i).getDouble("lat");
                 double geographicLongitude= petrolStationArray.getJSONObject(i).getDouble("lng");
                 double distanc  = petrolStationArray.getJSONObject(i).getDouble("dist");
-                if ( petrolStationArray.getJSONObject(i).isNull("price"))
+                if ( !petrolStationArray.getJSONObject(i).isNull("price"))
                 {
-
-                }else{
                     double price = petrolStationArray.getJSONObject(i).getDouble("price");
                     boolean isOpen = petrolStationArray.getJSONObject(i).getBoolean("isOpen");
                     String houseNumber = petrolStationArray.getJSONObject(i).getString("houseNumber");

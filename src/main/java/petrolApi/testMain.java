@@ -1,4 +1,4 @@
-package petrolApiEinfach;
+package petrolApi;
 
 import org.json.JSONArray;
 
@@ -7,6 +7,7 @@ public class testMain {
         PetrolStationApi petrolStationApiMosbach = new PetrolStationApi(49.337470,9.120130,PetrolTyp.e10);
         petrolStationApiMosbach.search();
         JSONArray jarr = petrolStationApiMosbach.returnObj.getJSONArray("stations");
+        System.out.println("Test");
         System.out.println(jarr.getJSONObject(0));
     }
 }
