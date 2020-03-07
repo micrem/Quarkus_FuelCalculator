@@ -17,8 +17,8 @@ public class TEST {
     public String getAPI(@FormParam("searchLongInput") Double searchLongInput, @FormParam("searchLatInput") Double searchLatInput)
     {
         StringBuilder strBuilderJS = new StringBuilder();
-        PetrolStationApi petrolStationApi = new PetrolStationApi(searchLatInput,searchLongInput, PetrolTyp.e10);
-        petrolStationApi.search();
+        PetrolStationApi petrolStationApi = new PetrolStationApi();
+        petrolStationApi.search(searchLatInput,searchLongInput, PetrolTyp.e10);
         strBuilderJS.append("<script>" + "var x = document.getElementById('responseDiv');\n");
         for (int i = 0; i < petrolStationApi.returnObj.getJSONArray("stations").length(); i++) {
             JSONObject element = petrolStationApi.returnObj.getJSONArray("stations").getJSONObject(i);
