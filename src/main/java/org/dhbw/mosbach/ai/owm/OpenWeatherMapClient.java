@@ -1,8 +1,11 @@
 package org.dhbw.mosbach.ai.owm;
 
-import java.io.InputStream;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import org.dhbw.mosbach.ai.model.TemperatureMeasurementUnit;
+import org.dhbw.mosbach.ai.model.UnitConverter;
+import org.dhbw.mosbach.ai.model.WeatherData;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -12,172 +15,146 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.dhbw.mosbach.ai.model.TemperatureMeasurementUnit;
-import org.dhbw.mosbach.ai.model.UnitConverter;
-import org.dhbw.mosbach.ai.model.WeatherData;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
-public class OpenWeatherMapClient
-{
-	/**
-	 * Get your own key, see http://openweathermap.org/appid
-	 */
-	public static final String API_KEY = "2443262bc0eaaeab19cabf0ccb14ef24";
+public class OpenWeatherMapClient {
+    /**
+     * Get your own key, see http://openweathermap.org/appid
+     */
+    public static final String API_KEY = "2443262bc0eaaeab19cabf0ccb14ef24";
+    public static final int OWM_CITY_ID_MOSBACH = 2869120;
+    /**
+     * Important: do not use the original service here, since the openweathermap
+     * API shall not be called more often than once within 10 minutes.
+     */
+    private static final String OWM_API_2_5_URL = /*
+     * "http://10.50.12.187:20480/weather/"
+     */ "http://10.50.15.51:20480/weather/";
+    private final WebTarget wt;
 
-	/**
-	 * Important: do not use the original service here, since the openweathermap
-	 * API shall not be called more often than once within 10 minutes.
-	 */
-	private static final String OWM_API_2_5_URL = /*
-	 * "http://10.50.12.187:20480/weather/"
-	 */ "http://10.50.15.51:20480/weather/";
+    /**
+     * Caching implementation. For an overview of guava, see
+     * https://github.com/google/guava/wiki
+     */
+    private LoadingCache<Integer, WeatherData> weatherDataCache;
 
-	public static final int OWM_CITY_ID_MOSBACH = 2869120;
+    /**
+     * Weather data cache expiration time in seconds.
+     */
+    private int expirationTimeSecs = 5;
 
-	private final WebTarget wt;
+    public OpenWeatherMapClient(String apiKey) {
+        final Client client = ClientBuilder.newClient();
+        wt = client.target(getUrl()).queryParam("appid", apiKey);
 
-	/**
-	 * Caching implementation. For an overview of guava, see
-	 * https://github.com/google/guava/wiki
-	 */
-	private LoadingCache<Integer, WeatherData> weatherDataCache;
+        initCache();
+    }
 
-	/**
-	 * Weather data cache expiration time in seconds.
-	 */
-	private int expirationTimeSecs = 5;
+    private String getUrl() {
+        final String resolvedUrl = ServiceDiscoveryHelper.getServiceUrl("/weather");
 
-	public OpenWeatherMapClient(String apiKey)
-	{
-		final Client client = ClientBuilder.newClient();
-		wt = client.target(getUrl()).queryParam("appid", apiKey);
+        return resolvedUrl != null ? resolvedUrl : OWM_API_2_5_URL;
+    }
 
-		initCache();
-	}
+    /**
+     * Initializes the weather cache. Here, a cache loader instance is created
+     * that invokes {@link #requestCurrentWeatherData(int, String)}.
+     */
+    private void initCache() {
+        weatherDataCache = CacheBuilder.newBuilder().expireAfterWrite(expirationTimeSecs, TimeUnit.SECONDS)
+                .build(new CacheLoader<Integer, WeatherData>() {
+                    @Override
+                    public WeatherData load(Integer cityId) throws Exception {
+                        return requestCurrentWeatherData(cityId, "");
+                    }
+                });
+    }
 
-	private String getUrl()
-	{
-		final String resolvedUrl = ServiceDiscoveryHelper.getServiceUrl("/weather");
+    /**
+     * Returns temperature in Celsius.
+     *
+     * @param jsonObject json object
+     * @param name       property of the given json object that represents the temperature
+     *                   in Kelvin
+     * @return temperature in Celsius
+     */
+    private float getTemperature(JsonObject jsonObject, String name) {
+        final float tempInKelvin = (float) jsonObject.getJsonNumber(name).doubleValue();
+        return UnitConverter.convert(TemperatureMeasurementUnit.Kelvin, TemperatureMeasurementUnit.Celsius, tempInKelvin);
+    }
 
-		return resolvedUrl != null ? resolvedUrl : OWM_API_2_5_URL;
-	}
+    /**
+     * Returns cached weather data for the given city, or current data if cached
+     * value has expired.
+     *
+     * @param cityId
+     * @param testData
+     * @return {@link WeatherData}
+     */
+    public WeatherData getCurrentWeatherData(int cityId, String testData) {
+        return weatherDataCache.getUnchecked(Integer.valueOf(cityId)).copyToNew(testData);
+    }
 
-	/**
-	 * Initializes the weather cache. Here, a cache loader instance is created
-	 * that invokes {@link #requestCurrentWeatherData(int, String)}.
-	 */
-	private void initCache()
-	{
-		weatherDataCache = CacheBuilder.newBuilder().expireAfterWrite(expirationTimeSecs, TimeUnit.SECONDS)
-				.build(new CacheLoader<Integer, WeatherData>()
-				{
-					@Override
-					public WeatherData load(Integer cityId) throws Exception
-					{
-						return requestCurrentWeatherData(cityId, "");
-					}
-				});
-	}
+    /**
+     * Does the actual REST request.
+     *
+     * @param cityId
+     * @param testData
+     * @return
+     */
+    private WeatherData requestCurrentWeatherData(int cityId, String testData) {
+        final Response response = wt.queryParam("id", cityId).request(MediaType.APPLICATION_JSON).get();
+        final JsonObject jsonObject = Json.createReader(response.readEntity(InputStream.class)).readObject();
 
-	/**
-	 * Returns temperature in Celsius.
-	 *
-	 * @param jsonObject
-	 *          json object
-	 * @param name
-	 *          property of the given json object that represents the temperature
-	 *          in Kelvin
-	 * @return temperature in Celsius
-	 */
-	private float getTemperature(JsonObject jsonObject, String name)
-	{
-		final float tempInKelvin = (float) jsonObject.getJsonNumber(name).doubleValue();
-		return UnitConverter.convert(TemperatureMeasurementUnit.Kelvin, TemperatureMeasurementUnit.Celsius, tempInKelvin);
-	}
+        return jsonResponseToWeatherData(jsonObject, testData);
+    }
 
-	/**
-	 * Returns cached weather data for the given city, or current data if cached
-	 * value has expired.
-	 *
-	 * @param cityId
-	 * @param testData
-	 * @return {@link WeatherData}
-	 */
-	public WeatherData getCurrentWeatherData(int cityId, String testData)
-	{
-		return weatherDataCache.getUnchecked(Integer.valueOf(cityId)).copyToNew(testData);
-	}
+    /**
+     * Converts a single location object to {@link WeatherData}.
+     *
+     * @param jsonObject
+     * @param testData
+     * @return {@link WeatherData}
+     */
+    private WeatherData jsonResponseToWeatherData(final JsonObject jsonObject, String testData) {
+        final JsonObject mainData = jsonObject.getJsonObject("main");
 
-	/**
-	 * Does the actual REST request.
-	 *
-	 * @param cityId
-	 * @param testData
-	 * @return
-	 */
-	private WeatherData requestCurrentWeatherData(int cityId, String testData)
-	{
-		final Response response = wt.queryParam("id", cityId).request(MediaType.APPLICATION_JSON).get();
-		final JsonObject jsonObject = Json.createReader(response.readEntity(InputStream.class)).readObject();
+        final float tempCelsiusCurrent = getTemperature(mainData, "temp");
+        final float tempCelsiusMax = getTemperature(mainData, "temp_max");
+        final float tempCelsiusMin = getTemperature(mainData, "temp_min");
 
-		return jsonResponseToWeatherData(jsonObject, testData);
-	}
+        return new WeatherData(tempCelsiusCurrent, tempCelsiusMax, tempCelsiusMin,
+                String.format("Mosbach Weather Service: %s", testData), new Date());
+    }
 
-	/**
-	 * Converts a single location object to {@link WeatherData}.
-	 *
-	 * @param jsonObject
-	 * @param testData
-	 * @return {@link WeatherData}
-	 */
-	private WeatherData jsonResponseToWeatherData(final JsonObject jsonObject, String testData)
-	{
-		final JsonObject mainData = jsonObject.getJsonObject("main");
+    private WeatherData requestCurrentWeatherData(String cityName, String testData) {
+        final Response response = wt.queryParam("q", cityName).request(MediaType.APPLICATION_JSON).get();
+        final JsonObject jsonObject = Json.createReader(response.readEntity(InputStream.class)).readObject();
 
-		final float tempCelsiusCurrent = getTemperature(mainData, "temp");
-		final float tempCelsiusMax = getTemperature(mainData, "temp_max");
-		final float tempCelsiusMin = getTemperature(mainData, "temp_min");
+        final JsonArray resultList = jsonObject.getJsonArray("list");
 
-		return new WeatherData(tempCelsiusCurrent, tempCelsiusMax, tempCelsiusMin,
-				String.format("Mosbach Weather Service: %s", testData), new Date());
-	}
+        if (!resultList.isEmpty()) {
+            return jsonResponseToWeatherData(resultList.getJsonObject(0), testData);
+        } else {
+            return null;
+        }
+    }
 
-	private WeatherData requestCurrentWeatherData(String cityName, String testData)
-	{
-		final Response response = wt.queryParam("q", cityName).request(MediaType.APPLICATION_JSON).get();
-		final JsonObject jsonObject = Json.createReader(response.readEntity(InputStream.class)).readObject();
+    public int getExpirationTimeMin() {
+        return expirationTimeSecs;
+    }
 
-		final JsonArray resultList = jsonObject.getJsonArray("list");
-
-		if (!resultList.isEmpty())
-		{
-			return jsonResponseToWeatherData(resultList.getJsonObject(0), testData);
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	public int getExpirationTimeMin()
-	{
-		return expirationTimeSecs;
-	}
-
-	/**
-	 * Sets cache expiration time in minutes. When this method is invoked, all
-	 * cached values will be discarded and the cache will be reinitialized.
-	 *
-	 * @param expirationTimeMin
-	 */
-	public void setExpirationTimeMin(int expirationTimeMin)
-	{
-		this.expirationTimeSecs = expirationTimeMin;
-		initCache();
-	}
+    /**
+     * Sets cache expiration time in minutes. When this method is invoked, all
+     * cached values will be discarded and the cache will be reinitialized.
+     *
+     * @param expirationTimeMin
+     */
+    public void setExpirationTimeMin(int expirationTimeMin) {
+        this.expirationTimeSecs = expirationTimeMin;
+        initCache();
+    }
 }

@@ -1,5 +1,4 @@
-package petrolApiEinfach;
-
+package apis.petrolApi;
 
 
 public class PetrolStationDat {
