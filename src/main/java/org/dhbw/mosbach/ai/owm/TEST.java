@@ -1,9 +1,9 @@
 package org.dhbw.mosbach.ai.owm;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import apis.petrolApi.PetrolStationApi;
 import apis.petrolApi.PetrolTyp;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,13 +12,21 @@ import javax.ws.rs.core.MediaType;
 public class TEST {
 
 
+    public static void main(String[] args) {
+
+        JSONArray jArr = new JSONArray(); //neues Array
+        jArr.put(new JSONObject()); // neues leeres JSON-Object auf Index =0
+        System.out.println(jArr.getJSONObject(0).isNull("value"));
+        //output : "true"
+
+    }
+
     @POST
     @Produces(MediaType.TEXT_HTML)
-    public String getAPI(@FormParam("searchLongInput") Double searchLongInput, @FormParam("searchLatInput") Double searchLatInput)
-    {
+    public String getAPI(@FormParam("searchLongInput") Double searchLongInput, @FormParam("searchLatInput") Double searchLatInput) {
         StringBuilder strBuilderJS = new StringBuilder();
         PetrolStationApi petrolStationApi = new PetrolStationApi();
-        petrolStationApi.search(searchLatInput,searchLongInput, PetrolTyp.e10);
+        petrolStationApi.search(searchLatInput, searchLongInput, PetrolTyp.e10);
         strBuilderJS.append("<script>" + "var x = document.getElementById('responseDiv');\n");
         for (int i = 0; i < petrolStationApi.returnObj.getJSONArray("stations").length(); i++) {
             JSONObject element = petrolStationApi.returnObj.getJSONArray("stations").getJSONObject(i);
@@ -30,21 +38,21 @@ public class TEST {
 
         strBuilderJS.append(
                 "\n" +
-                "var heading = document.createElement('h2'); // Heading of Response\n" +
-                "heading.innerHTML = 'Response';\n" +
-                "createResponse.appendChild(heading);\n" +
-                "\n" +
-                "var line = document.createElement('hr'); // Giving Horizontal Row After Heading\n" +
-                "createResponse.appendChild(line);\n" +
-                "\n" +
-                "var linebreak = document.createElement('br');\n" +
-                "createResponse.appendChild(linebreak);\n"+
-                "document.getElementById(\"clicker\").addEventListener(\"click\", myFunction);\n" +
-                "\n" +
-                "function myFunction() {\n" +
-                "  document.getElementById(\"clicker\").innerHTML = \"YOU CLICKED ME!\";\n" +
-                "}\n" +
-                "</script>\n");
+                        "var heading = document.createElement('h2'); // Heading of Response\n" +
+                        "heading.innerHTML = 'Response';\n" +
+                        "createResponse.appendChild(heading);\n" +
+                        "\n" +
+                        "var line = document.createElement('hr'); // Giving Horizontal Row After Heading\n" +
+                        "createResponse.appendChild(line);\n" +
+                        "\n" +
+                        "var linebreak = document.createElement('br');\n" +
+                        "createResponse.appendChild(linebreak);\n" +
+                        "document.getElementById(\"clicker\").addEventListener(\"click\", myFunction);\n" +
+                        "\n" +
+                        "function myFunction() {\n" +
+                        "  document.getElementById(\"clicker\").innerHTML = \"YOU CLICKED ME!\";\n" +
+                        "}\n" +
+                        "</script>\n");
 
         String returnStr = "\n" +
                 "<!DOCTYPE html>\n" +
@@ -60,7 +68,7 @@ public class TEST {
 
                 strBuilderJS.toString() +
 
-         //       "<script src='js/form.js'></script>\n" +
+                //       "<script src='js/form.js'></script>\n" +
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
@@ -76,11 +84,9 @@ public class TEST {
         return stationValue.toString();
     }
 
-
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getInput()
-    {
+    public String getInput() {
         //<input type=number step=any />
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
@@ -95,15 +101,6 @@ public class TEST {
                 "</form>\n" +
                 "</body>\n" +
                 "</html>\n";
-    }
-
-    public static void main(String[] args) {
-
-        JSONArray jArr = new JSONArray(); //neues Array
-        jArr.put(new JSONObject()); // neues leeres JSON-Object auf Index =0
-        System.out.println( jArr.getJSONObject(0).isNull("value") );
-        //output : "true"
-
     }
 
 }

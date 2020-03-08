@@ -1,63 +1,51 @@
 package org.dhbw.mosbach.ai.owm;
 
-import java.util.List;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.w3c.dom.Element;
+import java.util.List;
 
 @XmlRootElement
-public class OwmData
-{
-	public static class Coords
-	{
-		private float lon;
-		private float lat;
+public class OwmData {
+    private Coords coord;
+    private List<Element> otherElements;
 
-		public float getLon()
-		{
-			return lon;
-		}
+    public Coords getCoord() {
+        return coord;
+    }
 
-		public void setLon(float lon)
-		{
-			this.lon = lon;
-		}
+    public void setCoord(Coords coord) {
+        this.coord = coord;
+    }
 
-		public float getLat()
-		{
-			return lat;
-		}
+    @XmlAnyElement
+    public List<Element> getOtherElements() {
+        return otherElements;
+    }
 
-		public void setLat(float lat)
-		{
-			this.lat = lat;
-		}
-	}
+    public void setOtherElements(List<Element> otherElements) {
+        this.otherElements = otherElements;
+    }
 
-	private Coords coord;
+    public static class Coords {
+        private float lon;
+        private float lat;
 
-	private List<Element> otherElements;
+        public float getLon() {
+            return lon;
+        }
 
-	public Coords getCoord()
-	{
-		return coord;
-	}
+        public void setLon(float lon) {
+            this.lon = lon;
+        }
 
-	public void setCoord(Coords coord)
-	{
-		this.coord = coord;
-	}
+        public float getLat() {
+            return lat;
+        }
 
-	@XmlAnyElement
-	public List<Element> getOtherElements()
-	{
-		return otherElements;
-	}
-
-	public void setOtherElements(List<Element> otherElements)
-	{
-		this.otherElements = otherElements;
-	}
+        public void setLat(float lat) {
+            this.lat = lat;
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package apis.petrolApi;
 
 
-
 public class PetrolStationDat {
 
     private String id;

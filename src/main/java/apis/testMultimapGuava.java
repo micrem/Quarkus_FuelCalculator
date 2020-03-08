@@ -11,14 +11,14 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
-public class testMuplitmapGuava {
+public class testMultimapGuava {
     // https://www.codeflow.site/de/article/guava-multimap
     public static void main(String[] args) {
         Multimap<Integer, Geocode> sortedMap = Multimaps.newListMultimap(new TreeMap<>(Collections.reverseOrder()), Lists::newArrayList);
-        Multimap<Integer,Geocode> multimap9 = Multimaps.newMultimap(new TreeMap<>(Collections.reverseOrder()),Lists::newArrayList);
+        Multimap<Integer, Geocode> multimap9 = Multimaps.newMultimap(new TreeMap<>(Collections.reverseOrder()), Lists::newArrayList);
 
 
- //       Multimap<Integer,Geocode> multimap99 = TreeMultimap.create();
+        //       Multimap<Integer,Geocode> multimap99 = TreeMultimap.create();
 //        multimap99.put(7,new Geocode(15,55));
 //        multimap99.put(1,new Geocode(88,55));
 //        multimap99.put(1,new Geocode(55,55));
@@ -35,7 +35,7 @@ public class testMuplitmapGuava {
         multimap5.put(2, UUID.randomUUID());
 
         System.out.println(multimap5.entries());
-        for (Map.Entry<Integer, UUID> mapData: multimap5.entries()) {
+        for (Map.Entry<Integer, UUID> mapData : multimap5.entries()) {
             System.out.println(mapData.getValue().toString());
         }
 
@@ -61,16 +61,15 @@ public class testMuplitmapGuava {
 //        }
 
 
-    Map<Float, String> ascsortedMAP = new TreeMap<Float, String>();
-    Map<Float, Geocode> ascsortedMAP2 = new TreeMap<>();
+        Map<Float, String> ascsortedMAP = new TreeMap<Float, String>();
+        Map<Float, Geocode> ascsortedMAP2 = new TreeMap<>();
 
-        ascsortedMAP2.put(7f,new Geocode(15,55));
-        ascsortedMAP2.put(7f,new Geocode(88,55));
+        ascsortedMAP2.put(7f, new Geocode(15, 55));
+        ascsortedMAP2.put(7f, new Geocode(88, 55));
 
         for (Map.Entry<Float, Geocode> mapData : ascsortedMAP2.entrySet()) {
-        System.out.println("Key : " + mapData.getKey() + "Value : " + mapData.getValue().getLng());
-    }
-
+            System.out.println("Key : " + mapData.getKey() + "Value : " + mapData.getValue().getLng());
+        }
 
 
         ascsortedMAP.put(8f, "name8");
@@ -82,13 +81,11 @@ public class testMuplitmapGuava {
         ascsortedMAP.put(5f, "name6");
 
         for (Map.Entry<Float, String> mapData : ascsortedMAP.entrySet()) {
-        System.out.println("Key : " + mapData.getKey() + "Value : " + mapData.getValue());
+            System.out.println("Key : " + mapData.getKey() + "Value : " + mapData.getValue());
+        }
+
+
     }
-
-
-  }
-
-
 
 
 }

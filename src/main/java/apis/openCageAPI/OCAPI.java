@@ -1,27 +1,32 @@
 package apis.openCageAPI;
 
 import org.json.JSONObject;
-import java.io.*;
-import java.net.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class OCAPI {
 
-    private String apiURL="https://api.opencagedata.com/geocode/v1/google-v3-json";
-    private String apikey="5c8ac5624e884cbc988ba9a5d3a23520";
-    private String country="Deutschland";//steht fest, da Tankerkoenig API nur fuer Deutschland vorgesehen ist
-    private static final String urlComma="%2C";
+    private static final String urlComma = "%2C";
+    private String apiURL = "https://api.opencagedata.com/geocode/v1/google-v3-json";
+    private String apikey = "5c8ac5624e884cbc988ba9a5d3a23520";
+    private String country = "Deutschland";//steht fest, da Tankerkoenig API nur fuer Deutschland vorgesehen ist
 
     public Geocode returnGeocodeForAddressInput(int streetNum, String street, int postalCode, String city) throws IOException {
         //HOW TO USE: OCAPI.returnGeocodeForAddressInput(entsprechende Variablen)
         //PLZ ist in der Tat optional, API sucht nach Stadtnamen
-        String encodedStreet= URLEncoder.encode(street);
-        String encodedCity=URLEncoder.encode(city);
+        String encodedStreet = URLEncoder.encode(street);
+        String encodedCity = URLEncoder.encode(city);
         //URLEncoder wandelt Strassenname/Stadtname in URL-Kodierung um(d.h. die deutsche non ASCII Zeichen)
-        StringBuilder urlBuilder=new StringBuilder();
-        urlBuilder.append(apiURL+"?key="+apikey);
-        urlBuilder.append("&address="+streetNum+"+"+encodedStreet+urlComma+"+"+postalCode+"+"+encodedCity+"+"+country);
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(apiURL + "?key=" + apikey);
+        urlBuilder.append("&address=" + streetNum + "+" + encodedStreet + urlComma + "+" + postalCode + "+" + encodedCity + "+" + country);
 
-        StringBuilder results=new StringBuilder();
+        StringBuilder results = new StringBuilder();
 
 
         URL obj = new URL(urlBuilder.toString());
@@ -45,11 +50,11 @@ public class OCAPI {
         //print in String
         //System.out.println(response.toString());
 
-        JSONObject myResponse=new JSONObject(response.toString());
+        JSONObject myResponse = new JSONObject(response.toString());
 
-        JSONObject geocode=myResponse.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
+        JSONObject geocode = myResponse.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
 
-        Geocode placeholderGeocode=new Geocode((geocode.getDouble("lng")), (geocode.getDouble("lat")));
+        Geocode placeholderGeocode = new Geocode((geocode.getDouble("lng")), (geocode.getDouble("lat")));
         return placeholderGeocode;
     }
 
