@@ -12,7 +12,7 @@ import java.net.URLEncoder;
 public class OCAPITestClass {
     public static void main(String[] args) throws IOException {
         String text = "München";
-        String encodedText = URLEncoder.encode(text);
+        String encodedText = URLEncoder.encode(text, java.nio.charset.StandardCharsets.UTF_8.toString());
         System.out.println(encodedText);
 
         int streetNum = 10;
@@ -23,8 +23,8 @@ public class OCAPITestClass {
         String apikey = "5c8ac5624e884cbc988ba9a5d3a23520";
         String country = "Deutschland";
 
-        String encodedStreet = URLEncoder.encode(street);
-        String encodedCity = URLEncoder.encode(city);
+        String encodedStreet = URLEncoder.encode(street, java.nio.charset.StandardCharsets.UTF_8.toString());
+        String encodedCity = URLEncoder.encode(city, java.nio.charset.StandardCharsets.UTF_8.toString());
         //URLEncoder wandelt STrassenname/Stadtname in URL-Kodierung um(d.h. die deutsche non ASCII Zeichen)
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(apiURL + "?key=" + apikey);

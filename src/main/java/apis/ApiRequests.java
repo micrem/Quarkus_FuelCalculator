@@ -31,8 +31,24 @@ public class ApiRequests {
         PetrolStationApi petrolStationApi = new PetrolStationApi();
         ArrayList<PetrolStationDat> petrolStationDats = petrolStationApi.search(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp);
 
+        wegstreckeErmitteln(petrolVolume, petrolUsageCar, geocodePosition, petrolStationDats);
+        ArrayList<ApiRequestData> apiRequestDataArrayList = getTop3CheapestStations();
 
-        // Wegstrecke ermittel
+        return apiRequestDataArrayList;
+    }
+
+    private ArrayList<ApiRequestData> getTop3CheapestStations() {
+        // die drei mit den günstigen Gesmatpreis in die Liste Aufsteigende nach Preis einfuegen
+        ArrayList<ApiRequestData> apiRequestDataArrayList = new ArrayList<>();
+        int i = 0;
+        for (Map.Entry<Double, UUID> mapData : apiRequestMultimapUUID.entries()) {
+            if (i++ >= 3) break;
+            apiRequestDataArrayList.add(uuidApiRequestDataHashmap.get(mapData.getValue()));
+        }
+        return apiRequestDataArrayList;
+    }
+
+    private void wegstreckeErmitteln(double petrolVolume, double petrolUsageCar, Geocode geocodePosition, ArrayList<PetrolStationDat> petrolStationDats) {
         RouteAPI routeAPI = new RouteAPI();
         for (int i = 0; i < petrolStationDats.size(); i++) {
             RouteData routeData = routeAPI.calculateDistance(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude());
@@ -44,18 +60,6 @@ public class ApiRequests {
             apiRequestMultimapUUID.put(totalPrice, uuid);
             uuidApiRequestDataHashmap.put(uuid, apiRequestData);
         }
-        // die drei mit den günstigen Gesmatpreis in die Liste Aufsteigende nach Preis einfuegen
-        ArrayList<ApiRequestData> apiRequestDataArrayList = new ArrayList<>();
-        int i = 0;
-        for (Map.Entry<Double, UUID> mapData : apiRequestMultimapUUID.entries()) {
-            if (i == 3) {
-                break;
-            }
-            i++;
-            apiRequestDataArrayList.add(uuidApiRequestDataHashmap.get(mapData.getValue()));
-
-        }
-        return apiRequestDataArrayList;
     }
 
 
