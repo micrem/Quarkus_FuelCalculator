@@ -17,13 +17,6 @@ import java.util.logging.Logger;
 public class WeatherService {
     private final Logger logger = Logger.getLogger("root");
 
-    @Path("/form")
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getForm() {
-        return "0.10 alpha";
-    }
-
     /* (non-Javadoc)
      * @see org.dhbw.mosbach.ai.WeatherService#getVersion()
      */
@@ -31,7 +24,7 @@ public class WeatherService {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getVersion() {
-        return "0.10 alpha";
+        return "live edit geht!";
     }
 
 

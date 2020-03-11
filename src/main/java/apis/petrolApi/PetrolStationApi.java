@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PetrolStationApi {
     // https://creativecommons.tankerkoenig.de/json/list.php?lat=52.521&lng=13.438&rad=1.5&sort=dist&type=all&apikey=00000000-0000-0000-0000-000000000002
@@ -27,7 +28,7 @@ public class PetrolStationApi {
 
     }
 
-    public ArrayList<PetrolStationDat> search(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
+    public List<PetrolStationDat> search(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
         petrolStationDatArrayList = new ArrayList<>();
 
         HttpURLConnection connURL = null;
@@ -68,7 +69,7 @@ public class PetrolStationApi {
         //System.out.println(apiResultJson);
 
         JSONObject jsonObject = new JSONObject(apiResultJson.toString());
-        System.out.println(jsonObject);
+        //System.out.println(jsonObject);
         JSONArray petrolStationArray = jsonObject.getJSONArray("stations");
         //System.out.println(petrolStationArray);
         int test = petrolStationArray.length();
@@ -95,13 +96,7 @@ public class PetrolStationApi {
             } catch (JSONException e) {
                 System.err.println("Fehler beim Einlesen JSON" + e);
             }
-
         }
-
         return petrolStationDatArrayList;
-
-
     }
-
-
 }

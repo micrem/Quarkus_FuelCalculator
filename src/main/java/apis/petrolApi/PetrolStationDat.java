@@ -31,6 +31,21 @@ public class PetrolStationDat {
         this.postCode = postCode;
     }
 
+    public PetrolStationDat() {
+        this.id = "emptyID";
+        this.name = "name";
+        this.brand = "brand";
+        this.street = "street";
+        this.placeNamer = "placeName";
+        this.geographicLatitude = 0;
+        this.geographicLongitude = 0;
+        this.distance = 0;
+        this.price = 0;
+        this.isOpen = true;
+        this.houseNumber = "houseNumber";
+        this.postCode = 12345;
+    }
+
     public String getId() {
         return id;
     }
@@ -78,4 +93,6 @@ public class PetrolStationDat {
     public int getPostCode() {
         return postCode;
     }
+
+
 }

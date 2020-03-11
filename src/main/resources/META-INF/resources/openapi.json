@@ -1,0 +1,366 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SpritCalc REST API DHBW-Mosbach 2020",
+    "contact": {
+      "name": "SpritCalc API Support",
+      "url": "www.google.de",
+      "email": "help@microsoft.com"
+    },
+    "version": "1.0"
+  },
+  "paths": {
+    "/spritCalc": {
+      "get": {
+        "summary": "SpritCalcAPI GET/POST Path",
+        "description": "SpritCalcAPI Service",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "petrolTyp",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PetrolTyp"
+            }
+          },
+          {
+            "name": "petrolUsageCar",
+            "in": "query",
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "name": "petrolVolume",
+            "in": "query",
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "name": "postalCode",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "street",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "streetNum",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "SpritCalcAPI GET/POST Path",
+        "description": "SpritCalcAPI Service",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "petrolTyp",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PetrolTyp"
+            }
+          },
+          {
+            "name": "petrolUsageCar",
+            "in": "query",
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "name": "petrolVolume",
+            "in": "query",
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "name": "postalCode",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "street",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "streetNum",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/weather/converttemp/{source}/{target}/{value}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "source",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TemperatureMeasurementUnit"
+            }
+          },
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TemperatureMeasurementUnit"
+            }
+          },
+          {
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "format": "float",
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "float",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/weather/getMosbachWeatherToday/{testData}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "testData",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/weather/test": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/weather/testEing/{testData}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "testData",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/weather/testHTML": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/weather/version": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TemperatureMeasurementUnit": {
+        "enum": [
+          "Celsius",
+          "Fahrenheit",
+          "Kelvin"
+        ],
+        "type": "string"
+      },
+      "Date": {
+        "format": "date",
+        "type": "string"
+      },
+      "WeatherData": {
+        "type": "object",
+        "properties": {
+          "temperatureCelsiusCurrent": {
+            "format": "float",
+            "type": "number"
+          },
+          "temperatureCelsiusMax": {
+            "format": "float",
+            "type": "number"
+          },
+          "temperatureCelsiusMin": {
+            "format": "float",
+            "type": "number"
+          },
+          "testData": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "$ref": "#/components/schemas/Date"
+          }
+        }
+      },
+      "PetrolTyp": {
+        "enum": [
+          "all",
+          "diesel",
+          "e10",
+          "e5"
+        ],
+        "type": "string"
+      }
+    }
+  }
+}

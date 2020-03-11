@@ -32,7 +32,7 @@ public class TEST {
             JSONObject element = petrolStationApi.returnObj.getJSONArray("stations").getJSONObject(i);
             strBuilderJS.append(printStationStringValue(element, "place"));
             strBuilderJS.append(printStationStringValue(element, "name"));
-            //strBuilderJS.append(printStationStringValue(element, "price")); //price not a string, generic method won't work
+            strBuilderJS.append(printStationDoubleValue(element, "price"));
             strBuilderJS.append("var linebreak = document.createElement('br');\ncreateResponse.appendChild(linebreak);\n");
         }
 
@@ -75,10 +75,19 @@ public class TEST {
         return returnStr;
     }
 
-    private String printStationStringValue(JSONObject element, String var) {
+    private String printStationStringValue(JSONObject element, String attribute) {
         StringBuilder stationValue = new StringBuilder();
         stationValue.append("var createResponse = document.createElement('div');");
-        stationValue.append("createResponse.innerHTML = '").append(var).append(": ").append(element.getString(var)).append("';\n");
+        stationValue.append("createResponse.innerHTML = '").append(attribute).append(": ").append(element.getString(attribute)).append("';\n");
+        stationValue.append("x.appendChild(createResponse);\n");
+        stationValue.append("var linebreak = document.createElement('br');\ncreateResponse.appendChild(linebreak);\n");
+        return stationValue.toString();
+    }
+
+    private String printStationDoubleValue(JSONObject element, String attribute) {
+        StringBuilder stationValue = new StringBuilder();
+        stationValue.append("var createResponse = document.createElement('div');");
+        stationValue.append("createResponse.innerHTML = '").append(attribute).append(": ").append(element.getDouble(attribute)).append("';\n");
         stationValue.append("x.appendChild(createResponse);\n");
         stationValue.append("var linebreak = document.createElement('br');\ncreateResponse.appendChild(linebreak);\n");
         return stationValue.toString();
@@ -102,7 +111,6 @@ public class TEST {
                 "</body>\n" +
                 "</html>\n";
     }
-
 }
 
 

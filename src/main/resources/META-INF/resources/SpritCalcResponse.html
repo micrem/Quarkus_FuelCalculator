@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SpritCalcApp</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="DHBW WebServices SpritCalc Gruppe">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+
+<div style="width: 400px; " class="container-fluid text-center" id="container">
+    <div class="row text-center">
+        <div class="col">
+            <img id="logo" name="logo" class="img-fluid p-3" style="opacity:0" src="img/logo.png"/>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <hr/>
+        <h3 class="">
+            SpritCalcApp
+        </h3>
+        <hr/>
+    </div>
+    <div id="card1" class="row-fluid my-3">
+        <div class="card text-center">
+            <h5 name="header" class="card-header">1</h5>
+            <div class="card-body">
+                <h2 name="title" class="card-title">Card title</h2>
+                <ul name="list" class="list-group list-group-flush ">
+                    <li class="list-group-item">Cras justo odio</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="card2" class="row-fluid my-3">
+        <div class="card text-center">
+            <h5 name="header" class="card-header">1</h5>
+            <div class="card-body">
+                <h2 name="title" class="card-title">Card title</h2>
+                <ul name="list" class="list-group list-group-flush ">
+                    <li class="list-group-item">Cras justo odio</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="card3" class="row-fluid my-3">
+        <div class="card text-center">
+            <h5 name="header" class="card-header">1</h5>
+            <div class="card-body">
+                <h2 name="title" class="card-title">Card title</h2>
+                <ul name="list" class="list-group list-group-flush ">
+                    <li class="list-group-item">Cras justo odio</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
+
+<script>
+$("#logo").animate({ opacity: '1' },"fast",
+	function(){
+		$("#results").animate({ opacity: '1'},"fast");
+		$("#logo").animate({ width: '150px'},"fast");
+		}
+);
+
+
+$("#card1 [name='title']").html("TEST2");
+
+const userAction = async () => {
+  const response = await fetch('http://example.com/movies.json', {
+    method: 'POST',
+    body: myBody, // string or object
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const myJson = await response.json(); //extract JSON from the http response
+  alert(myJson);
+
+  userAction();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SpritCalcApp</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div style="width: 300px; " class="container-fluid" id="container">
+    <div class="row">
+        <div class="col text-center">
+            <img id="logo" name="logo" class="img-fluid p-3" style="opacity:0" src="img/logo.png"/>
+        </div>
+
+        <div class="col-md-12 text-center p-2" style="opacity:0" id="formContainer">
+            <hr/>
+            <h3 class="">
+                SpritCalc
+            </h3>
+            </h3>
+            <hr/>
+            <form role="form" action="" method="GET" id="form">
+                <div class="row d-none">
+                    <div class="form-group col">
+                        <label class="">Standort</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col ">
+                        <input class="form-control" type=text id="city" name="city" placeholder="Stadt" required>
+                    </div>
+                    <div class="form-group col-4 pl-0 ml-0">
+                        <input class="form-control" type=number id="PLZ" name="PLZ" placeholder="PLZ" min="0"
+                               max="99999">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col ">
+                        <input class="form-control" type=text id="street" name="street" placeholder="Straße">
+                    </div>
+
+                    <div class="form-group col-3 pl-0 ml-0">
+                        <input class="form-control" type=number id="streetNum" name="streetNum" placeholder="Nr.">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-7">
+                        <label for="inputSpritTyp">Sprittyp</label>
+                        <select type=text name="inputSpritTyp" id="inputSpritTyp" class="form-control">
+                            <option>all</option>
+                            <option>diesel</option>
+                            <option selected>e10</option>
+                            <option>e5</option>
+                        </select>
+                    </div>
+                    <div class="form-group col pl-0 ml-0">
+                        <label for="Verbrauch">Verbrauch</label>
+                        <input class="form-control" type=number id="Verbrauch" name="Verbrauch" placeholder="l/100km"
+                               required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="Tankmenge">Gewünschte Tankmenge (Liter)</label>
+                        <input class="form-control" type=number id="Tankmenge" name="Tankmenge" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="checkbox d-none">
+                        <label>
+                            <input type="checkbox"> checkboxy
+                        </label>
+                    </div>
+                    <div class="form-group col">
+                        <div class="btn btn-primary" onclick="callAPI()">Submit</div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="loadingSpinner" style="opacity:0" class="container d-none text-center p-5">
+    <img src="img/15.gif" alt="Loading.." />
+</div>
+<div style="opacity:0" id="responseContainer" class="d-none">
+    <div style="width: 300px; height: 0px" class="container-fluid text-center">
+
+        <div class="row text-center">
+            <hr/>
+            <h3 class="">
+                Billigste Tankmöglichkeiten</br>
+            </h3>
+            <hr/>
+        </div>
+
+        <div id="card1" class="row-fluid my-3">
+            <div class="card text-center">
+                <h5 name="header" class="card-header">1</h5>
+                <div class="card-body">
+                    <h2 name="stationName" class="card-title">StationName</h2>
+                    <ul class="list-group list-group-flush ">
+                        <li name="totalCost" class="list-group-item">Gesamtpreis</li>
+                        <li name="routeCost" class="list-group-item">Davon Fahrkosten</li>
+                        <li name="distance" class="list-group-item">Entfernung</li>
+                        <li name="adress" class="list-group-item">Adresse1</li>
+                        <li name="adress2" class="list-group-item">Adresse2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="card2" class="row-fluid my-3">
+            <div class="card text-center">
+                <h5 name="header" class="card-header">1</h5>
+                <div class="card-body">
+                    <h2 name="stationName" class="card-title">StationName</h2>
+                    <ul class="list-group list-group-flush ">
+                        <li name="totalCost" class="list-group-item">Gesamtpreis</li>
+                        <li name="routeCost" class="list-group-item">Davon Fahrkosten</li>
+                        <li name="distance" class="list-group-item">Entfernung</li>
+                        <li name="adress" class="list-group-item">Adresse1</li>
+                        <li name="adress2" class="list-group-item">Adresse2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="card3" class="row-fluid my-3">
+            <div class="card text-center">
+                <h5 name="header" class="card-header">1</h5>
+                <div class="card-body">
+                    <h2 name="stationName" class="card-title">StationName</h2>
+                    <ul class="list-group list-group-flush ">
+                        <li name="totalCost" class="list-group-item">Gesamtpreis</li>
+                        <li name="routeCost" class="list-group-item">Davon Fahrkosten</li>
+                        <li name="distance" class="list-group-item">Entfernung</li>
+                        <li name="adress" class="list-group-item">Adresse1</li>
+                        <li name="adress2" class="list-group-item">Adresse2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid my-3">
+            <span class="text-muted"><small>(für mehr Ergebnisse </br> bitte Vollversion erwerben)</small></span>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
+
+<script>
+
+    $("#logo").animate({opacity: '1'}, "slow",
+        function () {
+            $("#formContainer").animate({opacity: '1'}, "slow");
+            $("#logo").animate({width: '150px'}, "slow");
+        }
+    );
+
+    var responseSpritApi = null;
+    var responseJson;
+    var exampleResponse = [
+        {
+            "completePrice": 10.677528,
+            "petrolStationDat": {
+                "brand": "Freie Automatentankstelle",
+                "distance": 6.7,
+                "geographicLatitude": 49.148681640625,
+                "geographicLongitude": 8.9788904190063,
+                "houseNumber": "14",
+                "id": "2d2889b6-69ee-49c1-8b9b-ad4cc278b7b9",
+                "name": "Tankstelle Gemmingen",
+                "open": true,
+                "placeNamer": "Gemmingen",
+                "postCode": 75050,
+                "price": 1.249,
+                "street": "Gottlieb-Daimler-Str."
+            },
+            "routeData": {
+                "distance": 8569.1,
+                "duration": 695.1
+            },
+            "travelcost": 0.685528,
+            "uuid": "e260a58b-e8c2-4e51-9b47-e78622b28a7a"
+        },
+        {
+            "completePrice": 10.799071999999999,
+            "petrolStationDat": {
+                "brand": "ARAL",
+                "distance": 3.5,
+                "geographicLatitude": 49.0664024,
+                "geographicLongitude": 9.011304,
+                "houseNumber": "70",
+                "id": "8329aa4a-0ccb-4986-a491-45182919ab53",
+                "name": "Aral Tankstelle",
+                "open": false,
+                "placeNamer": "Güglingen",
+                "postCode": 74363,
+                "price": 1.299,
+                "street": "Heilbronner Straße"
+            },
+            "routeData": {
+                "distance": 5088.4,
+                "duration": 475.3
+            },
+            "travelcost": 0.407072,
+            "uuid": "72765b63-efbe-42b5-99b5-de1686909662"
+        },
+        {
+            "completePrice": 10.997144,
+            "petrolStationDat": {
+                "brand": "MTB",
+                "distance": 9.9,
+                "geographicLatitude": 49.02148,
+                "geographicLongitude": 9.09775,
+                "houseNumber": "14",
+                "id": "25aa4243-840a-48b7-b6c9-7dd6e5d53cc0",
+                "name": "MTB Tankstelle",
+                "open": true,
+                "placeNamer": "Erligheim",
+                "postCode": 74391,
+                "price": 1.249,
+                "street": "Bönnigheimer Str."
+            },
+            "routeData": {
+                "distance": 12564.3,
+                "duration": 913.8
+            },
+            "travelcost": 1.005144,
+            "uuid": "202d7a37-7021-49fd-b160-ed95ee0f6b36"
+        }
+    ];
+
+    const testCall = async () => {
+        const response = await fetch('http://localhost:8080/SpritCalc?' +
+            'city=' + city +
+            '&PLZ=' + PLZ +
+            '&street=' + street +
+            '&streetNum=' + streetNum +
+            '&inputSpritTyp=' + inputSpritTyp +
+            '&Verbrauch=' + Verbrauch +
+            '&Tankmenge=' + Tankmenge, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        responseJson = await response.json(); //extract JSON from the http response
+
+    };
+
+
+    const callAPI = function () {
+        let data = getData();
+    };
+
+
+    const getData = function () {
+
+        if ($("#form")[0].reportValidity() == false) return;
+
+        let url = 'http://localhost:8080/spritCalc?' +
+            'city=' + $("#city")[0].value;
+        if ($("#PLZ")[0].value) url = url + '&postalCode=' + $("#PLZ")[0].value;
+        if ($("#street")[0].value) url = url + '&street=' + $("#street")[0].value;
+        if ($("#streetNum")[0].value) url = url + '&streetNum=' + $("#streetNum")[0].value;
+        url = url + '&petrolTyp=' + $("#inputSpritTyp")[0].value +
+            '&petrolUsageCar=' + $("#Verbrauch")[0].value +
+            '&petrolVolume=' + $("#Tankmenge")[0].value;
+        console.log('url:' + url);
+
+        fetch(url)
+            .then((ret) => ret.json())
+            .then(ret=>{console.log(ret); return ret;})
+            .then(ret=>{responseSpritApi = ret; return ret;})
+            .then(function(data) {
+                data=exampleResponse;
+                for (let i = 0; i < data.length; i++) {
+                    $('#card' + (i + 1) + " [name='header']").html(i + 1);
+                    $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
+                    $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
+                    $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
+                    $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].routeData.distance / 1000).toFixed(1).concat("km"));
+                    $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
+                    $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
+                }
+            }).then(async function(){
+                console.log("wait..");
+                console.log("after wait");
+                $("#loadingSpinner").animate({opacity: '0'}, "fast",
+                    function () {
+                        console.log("showing results");
+                            $("#loadingSpinner").addClass("d-none");
+                            $("#responseContainer").removeClass("d-none");
+                            $("#responseContainer").animate({opacity: '1'}, "slow");
+                            }
+                        )
+                    }
+        );
+
+
+
+        $("#formContainer").animate({opacity: '0'}, "slow",
+            function () {
+                console.log("showing spinner");
+                $("#formContainer").addClass("d-none");
+                $("#loadingSpinner").removeClass("d-none").animate({opacity: '1'}, "fast");
+            }
+        );
+
+    }
+
+    const getDataOffline = function () {
+
+        if ($("#form")[0].reportValidity() == false) return;
+
+        let url = 'http://localhost:8080/spritCalc?' +
+            'city=' + $("#city")[0].value;
+        if ($("#PLZ")[0].value) url = url + '&postalCode=' + $("#PLZ")[0].value;
+        if ($("#street")[0].value) url = url + '&street=' + $("#street")[0].value;
+        if ($("#streetNum")[0].value) url = url + '&streetNum=' + $("#streetNum")[0].value;
+        url = url + '&petrolTyp=' + $("#inputSpritTyp")[0].value +
+            '&petrolUsageCar=' + $("#Verbrauch")[0].value +
+            '&petrolVolume=' + $("#Tankmenge")[0].value;
+        console.log('url:' + url);
+
+        //fetch(url)
+        fetch("www.ard.de")
+            //.then((ret) => ret.json())
+            .then(ret=>{console.log(ret); return ret;})
+            .then(ret=>{responseSpritApi = ret; return ret;})
+            .then(function(data) {
+                data=exampleResponse;
+                for (let i = 0; i < data.length; i++) {
+                    $('#card' + (i + 1) + " [name='header']").html(i + 1);
+                    $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
+                    $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
+                    $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
+                    $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].routeData.distance / 1000).toFixed(1).concat("km"));
+                    $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
+                    $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
+                }
+            }).then(async function(){
+                console.log("wait..");
+                await sleep(2000);
+                console.log("after wait");
+                $("#loadingSpinner").animate({opacity: '0'}, "fast",
+                    function () {
+                        console.log("showing results");
+                        $("#loadingSpinner").addClass("d-none");
+                        $("#responseContainer").removeClass("d-none");
+                        $("#responseContainer").animate({opacity: '1'}, "slow");
+                    }
+                )
+            }
+        );
+
+
+
+        $("#formContainer").animate({opacity: '0'}, "slow",
+            function () {
+                console.log("showing spinner");
+                $("#formContainer").addClass("d-none");
+                $("#loadingSpinner").removeClass("d-none").animate({opacity: '1'}, "fast");
+            }
+        );
+
+    }
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+</script>
+
+</body>
+</html>
