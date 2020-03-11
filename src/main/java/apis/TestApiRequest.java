@@ -3,7 +3,6 @@ package apis;
 import apis.petrolApi.PetrolTyp;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestApiRequest {

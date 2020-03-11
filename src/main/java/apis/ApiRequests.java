@@ -31,7 +31,7 @@ public class ApiRequests {
         //Geocode geocodePosition = ocCommand.execute();
         OCAPI openCageAPI = new OCAPI();
         Geocode geocodePosition = openCageAPI.returnGeocodeForAddressInput(streetNum, street, postalCode, city);
-        LOG.info("OpenCage result:"+geocodePosition.getLng() + " " +geocodePosition.getLat());
+        LOG.info("OpenCage result:" + geocodePosition.getLng() + " " + geocodePosition.getLat());
         circuitStatus = ocCommand.isCircuitBreakerOpen() ? "Open" : "Closed";
         if (ocCommand.isResponseFromFallback())
             LOG.info("OpenCageCommand returned fallback! called with: " + Arrays.asList(streetNum, street, postalCode, city));
@@ -52,11 +52,11 @@ public class ApiRequests {
         circuitStatus = petrolStationCommand.isCircuitBreakerOpen() ? "Open" : "Closed";
         if (petrolStationDats.isEmpty()) {
             System.out.println("petrolStationDats.isEmpty() true");
-        } else if(petrolStationDats.get(0).getId().equals("emptyID")){
+        } else if (petrolStationDats.get(0).getId().equals("emptyID")) {
             System.out.println("petrolStationDats.get(0).getId()=" + petrolStationDats.get(0).getId());
         }
-        System.out.println("petrolStations size: "+ petrolStationDats.size());
-        if(petrolStationDats.isEmpty() || petrolStationDats.get(0).getId().equals("emptyID")) {
+        System.out.println("petrolStations size: " + petrolStationDats.size());
+        if (petrolStationDats.isEmpty() || petrolStationDats.get(0).getId().equals("emptyID")) {
             defaultReturn.setMessage("Fehler Geocode: konnte keine Tankstellen zur Adresse finden!");
             if (circuitStatus.equals("Open"))
                 defaultReturn.setMessage(defaultReturn.getMessage() + " Circuitbreaker: Open");

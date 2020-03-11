@@ -1,7 +1,5 @@
 package apis.openRouteAPI;
 
-import apis.openCageAPI.Geocode;
-import apis.openCageAPI.OCAPI;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
@@ -34,13 +32,13 @@ public class OpenRouteCommand extends HystrixCommand<RouteData> {
     @Override
     protected RouteData run() throws Exception {
         final RouteData routeData = openRouteClient.calculateDistance(startLat, startLng, endLat, endLng);
-        System.out.println("OpenRouteCommand call, params:"+ Arrays.asList(startLat, startLng, endLat, endLng) + " result: " + routeData.getDistance());
+        System.out.println("OpenRouteCommand call, params:" + Arrays.asList(startLat, startLng, endLat, endLng) + " result: " + routeData.getDistance());
         return routeData;
     }
 
     @Override
     protected RouteData getFallback() {
-        return new RouteData(-1,-1);
+        return new RouteData(-1, -1);
     }
 
 }

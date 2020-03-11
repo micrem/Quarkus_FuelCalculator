@@ -1,21 +1,17 @@
 package apis;
 
-import apis.openRouteAPI.RouteData;
-import apis.petrolApi.PetrolStationDat;
 import apis.petrolApi.PetrolTyp;
 
-import java.util.UUID;
-
 public class ApiRequestDataSimple {
-/*
-name tanke
-adresse tanke
-gesamtpreis
-entfernung
-fahrtkosten
-spritpreis
-sprittyp
-*/
+    /*
+    name tanke
+    adresse tanke
+    gesamtpreis
+    entfernung
+    fahrtkosten
+    spritpreis
+    sprittyp
+    */
     private String nameStation;
     private String adressStation; //FIXME: change to AdressClass instance
     private double totalPrice;

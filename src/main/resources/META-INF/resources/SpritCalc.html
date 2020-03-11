@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <title>SpritCalcApp</title>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
+    <meta content="Source code generated using layoutit.com" name="description">
+    <meta content="LayoutIt!" name="author">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -24,20 +24,20 @@
 <body>
 
 
-<div style="width: 300px; " class="container-fluid" id="container">
+<div class="container-fluid" id="container" style="width: 300px; ">
     <div class="row">
         <div class="col text-center">
-            <img id="logo" name="logo" class="img-fluid p-3" style="opacity:0" src="img/logo.png"/>
+            <img class="img-fluid p-3" id="logo" name="logo" src="img/logo.png" style="opacity:0"/>
         </div>
 
-        <div class="col-md-12 text-center p-2" style="opacity:0" id="formContainer">
+        <div class="col-md-12 text-center p-2" id="formContainer" style="opacity:0">
             <hr/>
             <h3 class="">
                 SpritCalc
             </h3>
             </h3>
             <hr/>
-            <form role="form" action="" method="GET" id="form">
+            <form action="" id="form" method="GET" role="form">
                 <div class="row d-none">
                     <div class="form-group col">
                         <label class="">Standort</label>
@@ -45,28 +45,28 @@
                 </div>
                 <div class="row">
                     <div class="form-group col ">
-                        <input class="form-control" type=text id="city" name="city" placeholder="Stadt" required>
+                        <input class="form-control" id="city" name="city" placeholder="Stadt" required type=text>
                     </div>
                     <div class="form-group col-4 pl-0 ml-0">
-                        <input class="form-control" type=number id="PLZ" name="PLZ" placeholder="PLZ" min="0"
-                               max="99999">
+                        <input class="form-control" id="PLZ" max="99999" min="0" name="PLZ" placeholder="PLZ"
+                               type=number>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col ">
-                        <input class="form-control" type=text id="street" name="street" placeholder="Straße">
+                        <input class="form-control" id="street" name="street" placeholder="Straße" type=text>
                     </div>
 
                     <div class="form-group col-3 pl-0 ml-0">
-                        <input class="form-control" type=number id="streetNum" name="streetNum" placeholder="Nr.">
+                        <input class="form-control" id="streetNum" name="streetNum" placeholder="Nr." type=number>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col-7">
                         <label for="inputSpritTyp">Sprittyp</label>
-                        <select type=text name="inputSpritTyp" id="inputSpritTyp" class="form-control">
+                        <select class="form-control" id="inputSpritTyp" name="inputSpritTyp" type=text>
                             <option>all</option>
                             <option>diesel</option>
                             <option selected>e10</option>
@@ -75,15 +75,15 @@
                     </div>
                     <div class="form-group col pl-0 ml-0">
                         <label for="Verbrauch">Verbrauch</label>
-                        <input class="form-control" type=number id="Verbrauch" name="Verbrauch" placeholder="l/100km"
-                               required>
+                        <input class="form-control" id="Verbrauch" name="Verbrauch" placeholder="l/100km" required
+                               type=number>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col">
                         <label for="Tankmenge">Gewünschte Tankmenge (Liter)</label>
-                        <input class="form-control" type=number id="Tankmenge" name="Tankmenge" required>
+                        <input class="form-control" id="Tankmenge" name="Tankmenge" required type=number>
                     </div>
                 </div>
 
@@ -102,11 +102,11 @@
         </div>
     </div>
 </div>
-<div id="loadingSpinner" style="opacity:0" class="container d-none text-center p-5">
-    <img src="img/15.gif" alt="Loading.." />
+<div class="container d-none text-center p-5" id="loadingSpinner" style="opacity:0">
+    <img alt="Loading.." src="img/15.gif"/>
 </div>
-<div style="opacity:0" id="responseContainer" class="d-none">
-    <div style="width: 300px; height: 0px" class="container-fluid text-center">
+<div class="d-none" id="responseContainer" style="opacity:0">
+    <div class="container-fluid text-center" style="width: 300px; height: 0px">
 
         <div class="row text-center">
             <hr/>
@@ -116,49 +116,49 @@
             <hr/>
         </div>
 
-        <div id="card1" class="row-fluid my-3">
+        <div class="row-fluid my-3" id="card1">
             <div class="card text-center">
-                <h5 name="header" class="card-header">1</h5>
+                <h5 class="card-header" name="header">1</h5>
                 <div class="card-body">
-                    <h2 name="stationName" class="card-title">StationName</h2>
+                    <h2 class="card-title" name="stationName">StationName</h2>
                     <ul class="list-group list-group-flush ">
-                        <li name="totalCost" class="list-group-item">Gesamtpreis</li>
-                        <li name="routeCost" class="list-group-item">Davon Fahrkosten</li>
-                        <li name="distance" class="list-group-item">Entfernung</li>
-                        <li name="adress" class="list-group-item">Adresse1</li>
-                        <li name="adress2" class="list-group-item">Adresse2</li>
+                        <li class="list-group-item" name="totalCost">Gesamtpreis</li>
+                        <li class="list-group-item" name="routeCost">Davon Fahrkosten</li>
+                        <li class="list-group-item" name="distance">Entfernung</li>
+                        <li class="list-group-item" name="adress">Adresse1</li>
+                        <li class="list-group-item" name="adress2">Adresse2</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div id="card2" class="row-fluid my-3">
+        <div class="row-fluid my-3" id="card2">
             <div class="card text-center">
-                <h5 name="header" class="card-header">1</h5>
+                <h5 class="card-header" name="header">1</h5>
                 <div class="card-body">
-                    <h2 name="stationName" class="card-title">StationName</h2>
+                    <h2 class="card-title" name="stationName">StationName</h2>
                     <ul class="list-group list-group-flush ">
-                        <li name="totalCost" class="list-group-item">Gesamtpreis</li>
-                        <li name="routeCost" class="list-group-item">Davon Fahrkosten</li>
-                        <li name="distance" class="list-group-item">Entfernung</li>
-                        <li name="adress" class="list-group-item">Adresse1</li>
-                        <li name="adress2" class="list-group-item">Adresse2</li>
+                        <li class="list-group-item" name="totalCost">Gesamtpreis</li>
+                        <li class="list-group-item" name="routeCost">Davon Fahrkosten</li>
+                        <li class="list-group-item" name="distance">Entfernung</li>
+                        <li class="list-group-item" name="adress">Adresse1</li>
+                        <li class="list-group-item" name="adress2">Adresse2</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div id="card3" class="row-fluid my-3">
+        <div class="row-fluid my-3" id="card3">
             <div class="card text-center">
-                <h5 name="header" class="card-header">1</h5>
+                <h5 class="card-header" name="header">1</h5>
                 <div class="card-body">
-                    <h2 name="stationName" class="card-title">StationName</h2>
+                    <h2 class="card-title" name="stationName">StationName</h2>
                     <ul class="list-group list-group-flush ">
-                        <li name="totalCost" class="list-group-item">Gesamtpreis</li>
-                        <li name="routeCost" class="list-group-item">Davon Fahrkosten</li>
-                        <li name="distance" class="list-group-item">Entfernung</li>
-                        <li name="adress" class="list-group-item">Adresse1</li>
-                        <li name="adress2" class="list-group-item">Adresse2</li>
+                        <li class="list-group-item" name="totalCost">Gesamtpreis</li>
+                        <li class="list-group-item" name="routeCost">Davon Fahrkosten</li>
+                        <li class="list-group-item" name="distance">Entfernung</li>
+                        <li class="list-group-item" name="adress">Adresse1</li>
+                        <li class="list-group-item" name="adress2">Adresse2</li>
                     </ul>
                 </div>
             </div>
@@ -280,11 +280,6 @@
 
 
     const callAPI = function () {
-        let data = getData();
-    };
-
-
-    const getData = function () {
 
         if ($("#form")[0].reportValidity() == false) return;
 
@@ -300,10 +295,16 @@
 
         fetch(url)
             .then((ret) => ret.json())
-            .then(ret=>{console.log(ret); return ret;})
-            .then(ret=>{responseSpritApi = ret; return ret;})
-            .then(function(data) {
-                data=exampleResponse;
+            .then(ret => {
+                console.log(ret);
+                return ret;
+            })
+            .then(ret => {
+                responseSpritApi = ret;
+                return ret;
+            })
+            .then(function (data) {
+                data = exampleResponse;
                 for (let i = 0; i < data.length; i++) {
                     $('#card' + (i + 1) + " [name='header']").html(i + 1);
                     $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
@@ -313,20 +314,19 @@
                     $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
                     $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
                 }
-            }).then(async function(){
+            }).then(async function () {
                 console.log("wait..");
                 console.log("after wait");
                 $("#loadingSpinner").animate({opacity: '0'}, "fast",
                     function () {
                         console.log("showing results");
-                            $("#loadingSpinner").addClass("d-none");
-                            $("#responseContainer").removeClass("d-none");
-                            $("#responseContainer").animate({opacity: '1'}, "slow");
-                            }
-                        )
+                        $("#loadingSpinner").addClass("d-none");
+                        $("#responseContainer").removeClass("d-none");
+                        $("#responseContainer").animate({opacity: '1'}, "slow");
                     }
+                )
+            }
         );
-
 
 
         $("#formContainer").animate({opacity: '0'}, "slow",
@@ -356,10 +356,16 @@
         //fetch(url)
         fetch("www.ard.de")
             //.then((ret) => ret.json())
-            .then(ret=>{console.log(ret); return ret;})
-            .then(ret=>{responseSpritApi = ret; return ret;})
-            .then(function(data) {
-                data=exampleResponse;
+            .then(ret => {
+                console.log(ret);
+                return ret;
+            })
+            .then(ret => {
+                responseSpritApi = ret;
+                return ret;
+            })
+            .then(function (data) {
+                data = exampleResponse;
                 for (let i = 0; i < data.length; i++) {
                     $('#card' + (i + 1) + " [name='header']").html(i + 1);
                     $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
@@ -369,7 +375,7 @@
                     $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
                     $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
                 }
-            }).then(async function(){
+            }).then(async function () {
                 console.log("wait..");
                 await sleep(2000);
                 console.log("after wait");
@@ -385,7 +391,6 @@
         );
 
 
-
         $("#formContainer").animate({opacity: '0'}, "slow",
             function () {
                 console.log("showing spinner");
@@ -396,9 +401,9 @@
 
     }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
 </script>
 

@@ -33,13 +33,13 @@ public class OpenCageCommand extends HystrixCommand<Geocode> {
     @Override
     protected Geocode run() throws Exception {
         final Geocode geocode = openCageClient.returnGeocodeForAddressInput(streetNum, street, postalCode, city);
-        System.out.println("OpenCageCommand call, params:"+ Arrays.asList(streetNum, street, postalCode, city) + " result: "+geocode.getLat() + " " +geocode.getLng());
+        System.out.println("OpenCageCommand call, params:" + Arrays.asList(streetNum, street, postalCode, city) + " result: " + geocode.getLat() + " " + geocode.getLng());
         return geocode;
     }
 
     @Override
     protected Geocode getFallback() {
-        return new Geocode(0,0);
+        return new Geocode(0, 0);
     }
 
 

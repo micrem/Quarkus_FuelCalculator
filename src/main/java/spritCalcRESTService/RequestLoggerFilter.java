@@ -13,24 +13,23 @@ import javax.ws.rs.ext.Provider;
 public class RequestLoggerFilter implements ContainerRequestFilter {
 
 
+    private static final Logger LOG = Logger.getLogger(RequestLoggerFilter.class);
 
-        private static final Logger LOG = Logger.getLogger(RequestLoggerFilter.class);
+    @Context
+    UriInfo info;
 
-        @Context
-        UriInfo info;
+    @Context
+    HttpServerRequest request;
 
-        @Context
-        HttpServerRequest request;
+    @Override
+    public void filter(ContainerRequestContext context) {
 
-        @Override
-        public void filter(ContainerRequestContext context) {
+        final String method = context.getMethod();
+        final String path = info.getPath();
+        final String address = request.remoteAddress().toString();
 
-            final String method = context.getMethod();
-            final String path = info.getPath();
-            final String address = request.remoteAddress().toString();
-
-            LOG.infof("Request %s %s from IP %s", method, path, address);
-            LOG.info("params:" + request.params().toString());
-        }
+        LOG.infof("Request %s %s from IP %s", method, path, address);
+        LOG.info("params:" + request.params().toString());
+    }
 }
 

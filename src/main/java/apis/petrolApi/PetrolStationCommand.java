@@ -1,7 +1,5 @@
 package apis.petrolApi;
 
-import apis.openRouteAPI.RouteAPI;
-import apis.openRouteAPI.RouteData;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
@@ -10,7 +8,7 @@ import com.netflix.hystrix.HystrixThreadPoolProperties;
 import java.util.Arrays;
 import java.util.List;
 
-public class PetrolStationCommand extends HystrixCommand<List<PetrolStationDat>>{
+public class PetrolStationCommand extends HystrixCommand<List<PetrolStationDat>> {
     double geographicLatitude;
     double geographicLongitude;
     PetrolTyp petrolTyp;
@@ -25,15 +23,15 @@ public class PetrolStationCommand extends HystrixCommand<List<PetrolStationDat>>
                 .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(1)));
 
         petrolStationApi = new PetrolStationApi();
-        this.geographicLatitude=geographicLatitude;
-        this.geographicLongitude=geographicLongitude;
-        this.petrolTyp=petrolTyp;
+        this.geographicLatitude = geographicLatitude;
+        this.geographicLongitude = geographicLongitude;
+        this.petrolTyp = petrolTyp;
     }
 
     @Override
     protected List<PetrolStationDat> run() throws Exception {
         final List<PetrolStationDat> search = petrolStationApi.search(geographicLatitude, geographicLongitude, petrolTyp);
-        System.out.println("PetrolStationCommand call, params:"+ Arrays.asList(geographicLatitude, geographicLongitude, petrolTyp) + " result: "+search.size()+"found");
+        System.out.println("PetrolStationCommand call, params:" + Arrays.asList(geographicLatitude, geographicLongitude, petrolTyp) + " result: " + search.size() + "found");
         return search;
     }
 

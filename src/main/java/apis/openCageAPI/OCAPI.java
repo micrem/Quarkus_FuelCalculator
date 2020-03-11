@@ -19,18 +19,18 @@ public class OCAPI {
     public Geocode returnGeocodeForAddressInput(int streetNum, String street, int postalCode, String city) throws IOException {
         //HOW TO USE: OCAPI.returnGeocodeForAddressInput(entsprechende Variablen)
         //PLZ ist in der Tat optional, API sucht nach Stadtnamen
-        String encodedStreet="";
-        String encodedCity="";
-        if(street!=null)encodedStreet = URLEncoder.encode(street,java.nio.charset.Charset.defaultCharset());
-        if(city!=null)encodedCity = URLEncoder.encode(city,java.nio.charset.Charset.defaultCharset());
+        String encodedStreet = "";
+        String encodedCity = "";
+        if (street != null) encodedStreet = URLEncoder.encode(street, java.nio.charset.Charset.defaultCharset());
+        if (city != null) encodedCity = URLEncoder.encode(city, java.nio.charset.Charset.defaultCharset());
 
         //URLEncoder wandelt Strassenname/Stadtname in URL-Kodierung um(d.h. die deutsche non ASCII Zeichen)
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(apiURL + "?key=" + apikey);
         urlBuilder.append("&address=");
-        if(streetNum!=0)urlBuilder.append(streetNum).append("+");
+        if (streetNum != 0) urlBuilder.append(streetNum).append("+");
         urlBuilder.append(encodedStreet).append(urlComma);
-        if(streetNum!=0)urlBuilder.append("+").append(postalCode);
+        if (streetNum != 0) urlBuilder.append("+").append(postalCode);
         urlBuilder.append("+").append(encodedCity);
         urlBuilder.append("+").append(country);
 
@@ -42,7 +42,7 @@ public class OCAPI {
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         int responseCode = con.getResponseCode();
         System.out.println("\nSending 'GET' request to URL : " + (urlBuilder.toString()));
-        System.out.println("Response Code : " + responseCode );
+        System.out.println("Response Code : " + responseCode);
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
@@ -58,7 +58,7 @@ public class OCAPI {
 
         JSONObject locationJSON = myResponse.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
         Geocode geocodeResult = new Geocode((locationJSON.getDouble("lng")), (locationJSON.getDouble("lat")));
-        System.out.println("OpenCage result: " + geocodeResult.getLng() + "  " +geocodeResult.getLat() );
+        System.out.println("OpenCage result: " + geocodeResult.getLng() + "  " + geocodeResult.getLat());
         return geocodeResult;
     }
 
