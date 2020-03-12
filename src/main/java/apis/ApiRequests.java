@@ -4,6 +4,7 @@ import apis.openCageAPI.Geocode;
 import apis.openCageAPI.OCAPI;
 import apis.openCageAPI.OpenCageCommand;
 import apis.openRouteAPI.OpenRouteCommand;
+import apis.openRouteAPI.RouteAPI;
 import apis.openRouteAPI.RouteData;
 import apis.petrolApi.PetrolStationApi;
 import apis.petrolApi.PetrolStationCommand;
@@ -44,12 +45,16 @@ public class ApiRequests {
         }
 
         // mit GPS Koordinate Tankstellsuche durchführen
-        PetrolStationCommand petrolStationCommand = new PetrolStationCommand(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp);
+        ApiResponseWrapper<List<PetrolStationDat>> petrolStationDatsWrapper = new PetrolStationApi().search(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp);
+        if(petrolStationDatsWrapper.getStatus()!=200) {
+            //return default object thingy / wrapper
+        }
+        List<PetrolStationDat> petrolStationDats = petrolStationDatsWrapper.getResponseData();
+        //PetrolStationCommand petrolStationCommand = new PetrolStationCommand(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp);
         //List<PetrolStationDat> petrolStationDats = petrolStationCommand.execute();
-        List<PetrolStationDat> petrolStationDats = new PetrolStationApi().search(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp);
-        if (petrolStationCommand.isResponseFromFallback())
-            LOG.info("PetrolStationCommand returned fallback! called with: " + Arrays.asList(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp));
-        circuitStatus = petrolStationCommand.isCircuitBreakerOpen() ? "Open" : "Closed";
+//        if (petrolStationCommand.isResponseFromFallback())
+//            LOG.info("PetrolStationCommand returned fallback! called with: " + Arrays.asList(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp));
+//        circuitStatus = petrolStationCommand.isCircuitBreakerOpen() ? "Open" : "Closed";
         if (petrolStationDats.isEmpty()) {
             System.out.println("petrolStationDats.isEmpty() true");
         } else if (petrolStationDats.get(0).getId().equals("emptyID")) {
@@ -58,8 +63,8 @@ public class ApiRequests {
         System.out.println("petrolStations size: " + petrolStationDats.size());
         if (petrolStationDats.isEmpty() || petrolStationDats.get(0).getId().equals("emptyID")) {
             defaultReturn.setMessage("Fehler Geocode: konnte keine Tankstellen zur Adresse finden!");
-            if (circuitStatus.equals("Open"))
-                defaultReturn.setMessage(defaultReturn.getMessage() + " Circuitbreaker: Open");
+//            if (circuitStatus.equals("Open"))
+//                defaultReturn.setMessage(defaultReturn.getMessage() + " Circuitbreaker: Open");
             return Arrays.asList(defaultReturn);
         }
 
@@ -73,11 +78,13 @@ public class ApiRequests {
 
     private void wegstreckeErmitteln(double petrolVolume, double petrolUsageCar, Geocode geocodePosition, List<PetrolStationDat> petrolStationDats) {
         for (int i = 0; i < petrolStationDats.size(); i++) {
-            OpenRouteCommand orCommand = new OpenRouteCommand(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude());
-            RouteData routeData = orCommand.execute();
-            if (orCommand.isCircuitBreakerOpen()) LOG.info("OpenRouteCommand Circuitbreaker open!");
-            if (orCommand.isResponseFromFallback())
-                LOG.info("OpenRouteCommand returned fallback! called with: " + Arrays.asList(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude()));
+//            OpenRouteCommand orCommand = new OpenRouteCommand(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude());
+//            RouteData routeData = orCommand.execute();
+//            if (orCommand.isCircuitBreakerOpen()) LOG.info("OpenRouteCommand Circuitbreaker open!");
+//            if (orCommand.isResponseFromFallback())
+//                LOG.info("OpenRouteCommand returned fallback! called with: " + Arrays.asList(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude()));
+            RouteAPI routeAPI = new RouteAPI();
+            RouteData routeData = routeAPI.calculateDistance(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude());
             // Ausrechnen vom Gesamtpreis
             double totalPrice;
             double travelcost = (petrolUsageCar * (routeData.getDistance() / 100000));

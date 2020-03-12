@@ -6,6 +6,9 @@ import org.eclipse.microprofile.openapi.annotations.info.Info;
 
 import javax.ws.rs.core.Application;
 
+/**
+ * exisitert nur damit openapi/swagger @Info-Parameter einliest, funktioniert nur mit Application Class
+ */
 @OpenAPIDefinition(
         info = @Info(
                 title = "SpritCalc REST API DHBW-Mosbach 2020",

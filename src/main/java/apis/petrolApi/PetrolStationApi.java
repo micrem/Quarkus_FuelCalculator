@@ -1,5 +1,6 @@
 package apis.petrolApi;
 
+import apis.ApiResponseWrapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,14 +23,14 @@ public class PetrolStationApi {
     private static final String sort = "dist";
     // nur zum test Public muss dann noch auf private geändetr werden datenzugriff erfolgt über die Klasse Petrol StattionApi
     public JSONObject returnObj;
-    private ArrayList<PetrolStationDat> petrolStationDatArrayList;
+    private List<PetrolStationDat> petrolStationDataList;
 
     public PetrolStationApi() {
 
     }
 
-    public List<PetrolStationDat> search(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
-        petrolStationDatArrayList = new ArrayList<>();
+    public ApiResponseWrapper<List<PetrolStationDat>> search(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
+        petrolStationDataList = new ArrayList<>();
 
         HttpURLConnection connURL = null;
         StringBuilder apiResultJson = new StringBuilder();
@@ -47,6 +48,7 @@ public class PetrolStationApi {
         try {
             URL url = new URL(stringBuilder.toString());
             connURL = (HttpURLConnection) url.openConnection();
+            if (connURL.getResponseCode() != 200) return new ApiResponseWrapper<>(connURL.getResponseCode(),"HttP response not 200",null);
             InputStreamReader inputStreamReader = new InputStreamReader(connURL.getInputStream());
             int read;
             char[] buff = new char[1024];
@@ -67,7 +69,7 @@ public class PetrolStationApi {
         }
 
         //System.out.println(apiResultJson);
-
+        //TODO: CHECK ERRORS in response
         JSONObject jsonObject = new JSONObject(apiResultJson.toString());
         //System.out.println(jsonObject);
         JSONArray petrolStationArray = jsonObject.getJSONArray("stations");
@@ -75,28 +77,30 @@ public class PetrolStationApi {
         int test = petrolStationArray.length();
         for (int i = 0; i < petrolStationArray.length(); i++) {
             try {
-                String id = petrolStationArray.getJSONObject(i).getString("id");
-                String name = petrolStationArray.getJSONObject(i).getString("name");
-                String brand = petrolStationArray.getJSONObject(i).getString("brand");
-                String street = petrolStationArray.getJSONObject(i).getString("street");
-                String placeNamer = petrolStationArray.getJSONObject(i).getString("place");
-                double geographicLatitudeStation = petrolStationArray.getJSONObject(i).getDouble("lat");
-                double geographicLongitudeStation = petrolStationArray.getJSONObject(i).getDouble("lng");
-                double distanc = petrolStationArray.getJSONObject(i).getDouble("dist");
-                if (!petrolStationArray.getJSONObject(i).isNull("price")) {
-                    double price = petrolStationArray.getJSONObject(i).getDouble("price");
-                    boolean isOpen = petrolStationArray.getJSONObject(i).getBoolean("isOpen");
-                    String houseNumber = petrolStationArray.getJSONObject(i).getString("houseNumber");
-                    int postCode = petrolStationArray.getJSONObject(i).getInt("postCode");
+                JSONObject jsonObj = petrolStationArray.getJSONObject(i);
+                if (jsonObj.isNull("price")) {continue;}
 
-                    PetrolStationDat petrolStationDat = new PetrolStationDat(id, name, brand, street, placeNamer, geographicLatitudeStation, geographicLongitudeStation, distanc, price, isOpen, houseNumber, postCode);
+                String id = jsonObj.getString("id");
+                String name = jsonObj.getString("name");
+                String brand = jsonObj.getString("brand");
+                String street = jsonObj.getString("street");
+                String placeNamer = jsonObj.getString("place");
+                double geographicLatitudeStation = jsonObj.getDouble("lat");
+                double geographicLongitudeStation = jsonObj.getDouble("lng");
+                double distanc = jsonObj.getDouble("dist");
+                double price = jsonObj.getDouble("price");
+                boolean isOpen = jsonObj.getBoolean("isOpen");
+                String houseNumber = jsonObj.getString("houseNumber");
+                int postCode = jsonObj.getInt("postCode");
 
-                    petrolStationDatArrayList.add(petrolStationDat);
-                }
+                PetrolStationDat petrolStationDat = new PetrolStationDat(id, name, brand, street, placeNamer, geographicLatitudeStation, geographicLongitudeStation, distanc, price, isOpen, houseNumber, postCode);
+
+                petrolStationDataList.add(petrolStationDat);
+
             } catch (JSONException e) {
                 System.err.println("Fehler beim Einlesen JSON" + e);
             }
         }
-        return petrolStationDatArrayList;
+        return new ApiResponseWrapper<List<PetrolStationDat>>(200,"alles gut", petrolStationDataList);
     }
 }

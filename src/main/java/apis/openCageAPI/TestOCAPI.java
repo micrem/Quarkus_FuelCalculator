@@ -6,6 +6,7 @@ public class TestOCAPI {
     public static void main(String[] args) throws IOException {
         OCAPI openCageAPI = new OCAPI();
         System.out.println("default Request lat: " + openCageAPI.returnGeocodeForAddressInput(10, "Hauptstraße", 78421, "München").getLat());
+        System.out.println("default Request lat: " + openCageAPI.returnGeocodeForAddressInput(0, "", 0, "").getLat());
         //Hysterix Text
         OpenCageCommand ocCommand = new OpenCageCommand(10, "Hauptstraße", 78421, "München");
         Geocode execute = ocCommand.execute();

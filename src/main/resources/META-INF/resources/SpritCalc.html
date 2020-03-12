@@ -95,6 +95,8 @@
                     </div>
                     <div class="form-group col">
                         <div class="btn btn-primary" onclick="callAPI()">Submit</div>
+                        <!-- ONLINE <div class="btn btn-primary" onclick="callAPI()">Submit</div> -->
+                        <!-- OFFLINE <div class="btn btn-primary" onclick="getDataOffline()">Submit</div> -->
                     </div>
 
                 </div>
@@ -116,6 +118,10 @@
             <hr/>
         </div>
 
+        <div id="resultVerbrauch" class="row text-center"></div>
+
+        <div id="resultTankmenge" class="row text-center"></div>
+
         <div class="row-fluid my-3" id="card1">
             <div class="card text-center">
                 <h5 class="card-header" name="header">1</h5>
@@ -123,6 +129,7 @@
                     <h2 class="card-title" name="stationName">StationName</h2>
                     <ul class="list-group list-group-flush ">
                         <li class="list-group-item" name="totalCost">Gesamtpreis</li>
+                        <li class="list-group-item" name="petrolCost">Spritpreis</li>
                         <li class="list-group-item" name="routeCost">Davon Fahrkosten</li>
                         <li class="list-group-item" name="distance">Entfernung</li>
                         <li class="list-group-item" name="adress">Adresse1</li>
@@ -139,6 +146,7 @@
                     <h2 class="card-title" name="stationName">StationName</h2>
                     <ul class="list-group list-group-flush ">
                         <li class="list-group-item" name="totalCost">Gesamtpreis</li>
+                        <li class="list-group-item" name="petrolCost">Spritpreis</li>
                         <li class="list-group-item" name="routeCost">Davon Fahrkosten</li>
                         <li class="list-group-item" name="distance">Entfernung</li>
                         <li class="list-group-item" name="adress">Adresse1</li>
@@ -155,6 +163,7 @@
                     <h2 class="card-title" name="stationName">StationName</h2>
                     <ul class="list-group list-group-flush ">
                         <li class="list-group-item" name="totalCost">Gesamtpreis</li>
+                        <li class="list-group-item" name="petrolCost">Spritpreis</li>
                         <li class="list-group-item" name="routeCost">Davon Fahrkosten</li>
                         <li class="list-group-item" name="distance">Entfernung</li>
                         <li class="list-group-item" name="adress">Adresse1</li>
@@ -172,12 +181,12 @@
 </div>
 </div>
 
-
 <script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
 
-<script>
+<script>  //SpritCalc Animationen + API-Calls
 
     $("#logo").animate({opacity: '1'}, "slow",
         function () {
@@ -198,7 +207,7 @@
                 "geographicLongitude": 8.9788904190063,
                 "houseNumber": "14",
                 "id": "2d2889b6-69ee-49c1-8b9b-ad4cc278b7b9",
-                "name": "Tankstelle Gemmingen",
+                "name": "OFFLINE TANKESTELLE",
                 "open": true,
                 "placeNamer": "Gemmingen",
                 "postCode": 75050,
@@ -304,19 +313,21 @@
                 return ret;
             })
             .then(function (data) {
-                data = exampleResponse;
+                $('#resultVerbrauch').html($('#resultVerbrauch').html());
+                $('#card' + (i + 1) + " [name='header']").html(i + 1);
                 for (let i = 0; i < data.length; i++) {
                     $('#card' + (i + 1) + " [name='header']").html(i + 1);
                     $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
                     $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
+                    $('#card' + (i + 1) + " [name='petrolCost']").html($("#inputSpritTyp") +
+                         " :" + data[i].petrolStationDat.price.toFixed(2).concat(" €"));
                     $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
                     $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].routeData.distance / 1000).toFixed(1).concat("km"));
                     $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
                     $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
                 }
             }).then(async function () {
-                console.log("wait..");
-                console.log("after wait");
+
                 $("#loadingSpinner").animate({opacity: '0'}, "fast",
                     function () {
                         console.log("showing results");
@@ -365,7 +376,7 @@
                 return ret;
             })
             .then(function (data) {
-                data = exampleResponse;
+                data = exampleResponse; //set data to test data
                 for (let i = 0; i < data.length; i++) {
                     $('#card' + (i + 1) + " [name='header']").html(i + 1);
                     $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);

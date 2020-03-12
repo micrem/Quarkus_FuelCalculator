@@ -9,6 +9,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * logs all HTTP requests
+ */
 @Provider
 public class RequestLoggerFilter implements ContainerRequestFilter {
 

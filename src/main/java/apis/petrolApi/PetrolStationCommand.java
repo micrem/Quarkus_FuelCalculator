@@ -1,5 +1,6 @@
 package apis.petrolApi;
 
+import apis.ApiResponseWrapper;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
@@ -8,7 +9,7 @@ import com.netflix.hystrix.HystrixThreadPoolProperties;
 import java.util.Arrays;
 import java.util.List;
 
-public class PetrolStationCommand extends HystrixCommand<List<PetrolStationDat>> {
+public class PetrolStationCommand extends HystrixCommand<ApiResponseWrapper<List<PetrolStationDat>> > {
     double geographicLatitude;
     double geographicLongitude;
     PetrolTyp petrolTyp;
@@ -29,14 +30,14 @@ public class PetrolStationCommand extends HystrixCommand<List<PetrolStationDat>>
     }
 
     @Override
-    protected List<PetrolStationDat> run() throws Exception {
-        final List<PetrolStationDat> search = petrolStationApi.search(geographicLatitude, geographicLongitude, petrolTyp);
-        System.out.println("PetrolStationCommand call, params:" + Arrays.asList(geographicLatitude, geographicLongitude, petrolTyp) + " result: " + search.size() + "found");
-        return search;
+    protected ApiResponseWrapper<List<PetrolStationDat>>  run() throws Exception {
+        ApiResponseWrapper<List<PetrolStationDat>> ret = petrolStationApi.search(geographicLatitude, geographicLongitude, petrolTyp);
+        System.out.println("PetrolStationCommand call, params:" + Arrays.asList(geographicLatitude, geographicLongitude, petrolTyp) + " result: " + ret.getResponseData().size() + "found");
+        return ret;
     }
 
     @Override
-    protected List<PetrolStationDat> getFallback() {
-        return Arrays.asList(new PetrolStationDat());
+    protected ApiResponseWrapper<List<PetrolStationDat>>  getFallback() {
+        return new ApiResponseWrapper<>(200, "fallback", null);
     }
 }
