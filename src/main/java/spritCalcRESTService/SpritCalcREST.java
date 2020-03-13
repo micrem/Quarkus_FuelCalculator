@@ -42,8 +42,8 @@ public class SpritCalcREST {
         ApiRequests spritCalcService = new ApiRequests();
         List<ApiRequestData> apiResult;
         try {
-//            LOG.info("Request params:" + request.params().entries().size());
-//            request.params().entries().stream().forEach(e->LOG.info(e.getKey()+" "+e.getValue()));
+            LOG.info("Request params:" + request.params().entries().size());
+            request.params().entries().stream().forEach(e->LOG.info(e.getKey()+" "+e.getValue()));
             apiResult = spritCalcService.apiSearchStart(street, streetNum, postalCode, city, petrolTyp, petrolVolume, petrolUsageCar);
 
         } catch (IOException e) {

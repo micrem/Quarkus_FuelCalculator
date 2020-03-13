@@ -94,7 +94,7 @@
                         </label>
                     </div>
                     <div class="form-group col">
-                        <div class="btn btn-primary" onclick="callAPI()">Submit</div>
+                        <div class="btn btn-primary" onclick="buttonPress()">Submit</div>
                         <!-- ONLINE <div class="btn btn-primary" onclick="callAPI()">Submit</div> -->
                         <!-- OFFLINE <div class="btn btn-primary" onclick="getDataOffline()">Submit</div> -->
                     </div>
@@ -187,7 +187,7 @@
 <script src="js/scripts.js"></script>
 
 <script>  //SpritCalc Animationen + API-Calls
-
+const useTestData = false;
     $("#logo").animate({opacity: '1'}, "slow",
         function () {
             $("#formContainer").animate({opacity: '1'}, "slow");
@@ -196,12 +196,12 @@
     );
 
     var responseSpritApi = null;
-    var responseJson;
+
     var exampleResponse = [
         {
             "completePrice": 10.677528,
             "petrolStationDat": {
-                "brand": "Freie Automatentankstelle",
+                "brand": "OFFLINE TESTDATA Freie Automatentankstelle",
                 "distance": 6.7,
                 "geographicLatitude": 49.148681640625,
                 "geographicLongitude": 8.9788904190063,
@@ -269,6 +269,16 @@
         }
     ];
 
+    function buttonPress(){
+        if(useTestData){
+            getTestData();
+        } else {
+            getAPIData();
+        }
+    }
+
+    /*
+    var responseJson;
     const testCall = async () => {
         const response = await fetch('http://localhost:8080/SpritCalc?' +
             'city=' + city +
@@ -285,22 +295,14 @@
         });
         responseJson = await response.json(); //extract JSON from the http response
 
-    };
+    }; */
 
 
-    const callAPI = function () {
+    const getAPIData = function () {
 
         if ($("#form")[0].reportValidity() == false) return;
 
-        let url = 'http://localhost:8080/spritCalc?' +
-            'city=' + $("#city")[0].value;
-        if ($("#PLZ")[0].value) url = url + '&postalCode=' + $("#PLZ")[0].value;
-        if ($("#street")[0].value) url = url + '&street=' + $("#street")[0].value;
-        if ($("#streetNum")[0].value) url = url + '&streetNum=' + $("#streetNum")[0].value;
-        url = url + '&petrolTyp=' + $("#inputSpritTyp")[0].value +
-            '&petrolUsageCar=' + $("#Verbrauch")[0].value +
-            '&petrolVolume=' + $("#Tankmenge")[0].value;
-        console.log('url:' + url);
+        let url = generateAPIURLfromForm();
 
         fetch(url)
             .then((ret) => ret.json())
@@ -312,21 +314,7 @@
                 responseSpritApi = ret;
                 return ret;
             })
-            .then(function (data) {
-                $('#resultVerbrauch').html($('#resultVerbrauch').html());
-                $('#card' + (i + 1) + " [name='header']").html(i + 1);
-                for (let i = 0; i < data.length; i++) {
-                    $('#card' + (i + 1) + " [name='header']").html(i + 1);
-                    $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
-                    $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
-                    $('#card' + (i + 1) + " [name='petrolCost']").html($("#inputSpritTyp") +
-                         " :" + data[i].petrolStationDat.price.toFixed(2).concat(" €"));
-                    $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
-                    $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].routeData.distance / 1000).toFixed(1).concat("km"));
-                    $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
-                    $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
-                }
-            }).then(async function () {
+            .then( writeValuesToDOM ).then(async function () {
 
                 $("#loadingSpinner").animate({opacity: '0'}, "fast",
                     function () {
@@ -350,43 +338,20 @@
 
     }
 
-    const getDataOffline = function () {
+    const getTestData = function () {
 
         if ($("#form")[0].reportValidity() == false) return;
 
-        let url = 'http://localhost:8080/spritCalc?' +
-            'city=' + $("#city")[0].value;
-        if ($("#PLZ")[0].value) url = url + '&postalCode=' + $("#PLZ")[0].value;
-        if ($("#street")[0].value) url = url + '&street=' + $("#street")[0].value;
-        if ($("#streetNum")[0].value) url = url + '&streetNum=' + $("#streetNum")[0].value;
-        url = url + '&petrolTyp=' + $("#inputSpritTyp")[0].value +
-            '&petrolUsageCar=' + $("#Verbrauch")[0].value +
-            '&petrolVolume=' + $("#Tankmenge")[0].value;
-        console.log('url:' + url);
+        let url = generateAPIURLfromForm();
 
         //fetch(url)
-        fetch("www.ard.de")
+        fetch("")
             //.then((ret) => ret.json())
             .then(ret => {
-                console.log(ret);
-                return ret;
+                responseSpritApi = ret; //save
+                return exampleResponse; //use only TestData
             })
-            .then(ret => {
-                responseSpritApi = ret;
-                return ret;
-            })
-            .then(function (data) {
-                data = exampleResponse; //set data to test data
-                for (let i = 0; i < data.length; i++) {
-                    $('#card' + (i + 1) + " [name='header']").html(i + 1);
-                    $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
-                    $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
-                    $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
-                    $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].routeData.distance / 1000).toFixed(1).concat("km"));
-                    $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
-                    $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
-                }
-            }).then(async function () {
+            .then( writeValuesToDOM ).then(async function () {
                 console.log("wait..");
                 await sleep(2000);
                 console.log("after wait");
@@ -394,8 +359,7 @@
                     function () {
                         console.log("showing results");
                         $("#loadingSpinner").addClass("d-none");
-                        $("#responseContainer").removeClass("d-none");
-                        $("#responseContainer").animate({opacity: '1'}, "slow");
+                        $('#responseContainer').removeClass("d-none").animate({opacity: '1'}, "slow");
                     }
                 )
             }
@@ -410,6 +374,35 @@
             }
         );
 
+    }
+
+    function generateAPIURLfromForm(){
+        let url = 'http://localhost:8080/spritCalc?' +
+            'city=' + $("#city")[0].value;
+        if ($("#PLZ")[0].value) url = url + '&postalCode=' + $("#PLZ")[0].value;
+        if ($("#street")[0].value) url = url + '&street=' + $("#street")[0].value;
+        if ($("#streetNum")[0].value) url = url + '&streetNum=' + $("#streetNum")[0].value;
+        url = url + '&petrolTyp=' + $("#inputSpritTyp")[0].value +
+            '&petrolUsageCar=' + $("#Verbrauch")[0].value +
+            '&petrolVolume=' + $("#Tankmenge")[0].value;
+        console.log('url:' + url);
+        return url;
+    }
+
+    function writeValuesToDOM(data) {
+        $('#resultVerbrauch').html($('#Verbrauch').val());
+        $('#resultTankmenge').html($('#Tankmenge').val());
+        for (let i = 0; i < data.length; i++) {
+            $('#card' + (i + 1) + " [name='header']").html(i + 1);
+            $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
+            $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
+            $('#card' + (i + 1) + " [name='petrolCost']").html($("#inputSpritTyp") +
+                " :" + data[i].petrolStationDat.price.toFixed(2).concat(" €"));
+            $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
+            $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].routeData.distance / 1000).toFixed(1).concat("km"));
+            $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
+            $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
+        }
     }
 
     function sleep(ms) {

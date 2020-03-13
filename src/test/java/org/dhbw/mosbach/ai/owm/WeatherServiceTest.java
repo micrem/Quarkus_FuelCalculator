@@ -8,6 +8,7 @@ public class WeatherServiceTest {
 
     @Test
     public void testHelloEndpoint() {
+        System.out.println("test running");
 //        given()
 //          .when().get("/weather/version")
 //          .then()
