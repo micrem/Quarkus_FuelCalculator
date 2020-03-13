@@ -79,6 +79,12 @@ public class PetrolStationApi {
             try {
                 JSONObject jsonObj = petrolStationArray.getJSONObject(i);
                 if (jsonObj.isNull("price")) {continue;}
+                if (jsonObj.isNull("lat")) {continue;}
+                if (jsonObj.isNull("lng")) {continue;}
+                if (jsonObj.isNull("dist")) {continue;}
+                if (jsonObj.isNull("isOpen")) {continue;}
+                if (jsonObj.isNull("postCod")) {continue;}
+
 
                 String id = jsonObj.getString("id");
                 String name = jsonObj.getString("name");
