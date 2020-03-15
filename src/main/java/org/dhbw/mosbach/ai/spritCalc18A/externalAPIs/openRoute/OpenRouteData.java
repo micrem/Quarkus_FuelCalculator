@@ -1,10 +1,10 @@
-package apis.openRouteAPI;
+package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openRoute;
 
-public class RouteData {
+public class OpenRouteData {
     private final double distance;
     private final double duration;
 
-    public RouteData(double distance, double duration) {
+    public OpenRouteData(double distance, double duration) {
         this.distance = distance;
         this.duration = duration;
     }

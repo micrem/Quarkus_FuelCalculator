@@ -1,6 +1,6 @@
-package apis.petrolApi;
+package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.tankerKoenig;
 
-import apis.ApiResponseWrapper;
+import org.dhbw.mosbach.ai.spritCalc18A.ApiResponseWrapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PetrolStationApi {
+public class TankerKoenigConnector {
     // https://creativecommons.tankerkoenig.de/json/list.php?lat=52.521&lng=13.438&rad=1.5&sort=dist&type=all&apikey=00000000-0000-0000-0000-000000000002
 
     private static final String apiBaseUrl = "https://creativecommons.tankerkoenig.de/json/list.php";
@@ -23,13 +23,13 @@ public class PetrolStationApi {
     private static final String sort = "dist";
     // nur zum test Public muss dann noch auf private geändetr werden datenzugriff erfolgt über die Klasse Petrol StattionApi
     public JSONObject returnObj;
-    private List<PetrolStationDat> petrolStationDataList;
+    private List<TankerKoenigData> petrolStationDataList;
 
-    public PetrolStationApi() {
+    public TankerKoenigConnector() {
 
     }
 
-    public ApiResponseWrapper<List<PetrolStationDat>> search(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
+    public ApiResponseWrapper<List<TankerKoenigData>> search(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
         petrolStationDataList = new ArrayList<>();
 
         HttpURLConnection connURL = null;
@@ -99,14 +99,14 @@ public class PetrolStationApi {
                 String houseNumber = jsonObj.getString("houseNumber");
                 int postCode = jsonObj.getInt("postCode");
 
-                PetrolStationDat petrolStationDat = new PetrolStationDat(id, name, brand, street, placeNamer, geographicLatitudeStation, geographicLongitudeStation, distanc, price, isOpen, houseNumber, postCode);
+                TankerKoenigData tankerKoenigData = new TankerKoenigData(id, name, brand, street, placeNamer, geographicLatitudeStation, geographicLongitudeStation, distanc, price, isOpen, houseNumber, postCode);
 
-                petrolStationDataList.add(petrolStationDat);
+                petrolStationDataList.add(tankerKoenigData);
 
             } catch (JSONException e) {
                 System.err.println("Fehler beim Einlesen JSON" + e);
             }
         }
-        return new ApiResponseWrapper<List<PetrolStationDat>>(200,"alles gut", petrolStationDataList);
+        return new ApiResponseWrapper<List<TankerKoenigData>>(200,"alles gut", petrolStationDataList);
     }
 }

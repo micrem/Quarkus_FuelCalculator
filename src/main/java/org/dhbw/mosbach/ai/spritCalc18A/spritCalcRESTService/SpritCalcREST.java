@@ -1,8 +1,8 @@
-package spritCalcRESTService;
+package org.dhbw.mosbach.ai.spritCalc18A.spritCalcRESTService;
 
-import apis.ApiRequestData;
-import apis.ApiRequests;
-import apis.petrolApi.PetrolTyp;
+import org.dhbw.mosbach.ai.spritCalc18A.SpritCalcBL;
+import org.dhbw.mosbach.ai.spritCalc18A.SpritCalcBLData;
+import org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.tankerKoenig.PetrolTyp;
 import io.vertx.core.http.HttpServerRequest;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.jboss.logging.Logger;
@@ -39,8 +39,8 @@ public class SpritCalcREST {
                                  @QueryParam("petrolVolume") double petrolVolume,
                                  @QueryParam("petrolUsageCar") double petrolUsageCar) {
         System.out.printf("spritCalcAPI called");
-        ApiRequests spritCalcService = new ApiRequests();
-        List<ApiRequestData> apiResult;
+        SpritCalcBL spritCalcService = new SpritCalcBL();
+        List<SpritCalcBLData> apiResult;
         try {
             LOG.info("Request params:" + request.params().entries().size());
             request.params().entries().stream().forEach(e->LOG.info(e.getKey()+" "+e.getValue()));
@@ -64,52 +64,10 @@ public class SpritCalcREST {
             description = "SpritCalcAPI Service")
     public Response spritCalcAPI() {
         System.out.printf("spritCalcAPI TestData called");
-        ApiRequests spritCalcService = new ApiRequests();
-        List<ApiRequestData> apiResult = spritCalcService.getFallBackData("API Test Betrieb");
+        SpritCalcBL spritCalcService = new SpritCalcBL();
+        List<SpritCalcBLData> apiResult = spritCalcService.getFallBackData("API Test Betrieb");
         return Response.ok(apiResult, MediaType.APPLICATION_JSON).build();
     }
-
-//    @GET
-//    @Produces(MediaType.TEXT_HTML)
-//    @Path("/getHTMLtest/{path}")
-//    public InputStream getFile(@PathParam("path") String path) {
-//        try {
-//            File f = new File("META-INF/resources/SpritCalc.html");
-//            return new FileInputStream(f);
-//        } catch (FileNotFoundException e) {
-//            LOG.info("file not found");
-//            return null;
-//        }
-//    }
-//
-//    @GET
-//    @Produces(MediaType.TEXT_HTML)
-//    @Path("/getHTML")
-//    public String getHTMLResponse(@QueryParam("city") String city, @QueryParam("PLZ") @DefaultValue("0") Integer postalCode,
-//                                  @QueryParam("streetNum") @DefaultValue("0") Integer streetNum, @DefaultValue("") @QueryParam("street") String street,
-//                                  @QueryParam("inputSpritTyp") String petrolTypeString, @QueryParam("Verbrauch") Double petrolUsageCar,
-//                                  @QueryParam("Tankmenge") Double petrolVolume) {
-//        System.out.println("getHTMLResponse");
-//        ApiRequests spritCalcService = new ApiRequests();
-//        List<ApiRequestData> apiResult;
-//        PetrolTyp petrolType = PetrolTyp.valueOf(petrolTypeString);
-//
-//        try {
-////            LOG.info("Request params:" + request.params().entries().size());
-////            request.params().entries().stream().forEach(e->LOG.info(e.getKey()+" "+e.getValue()));
-//            apiResult = spritCalcService.apiSearchStart(street, streetNum, postalCode, city, petrolType, petrolVolume, petrolUsageCar);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return Response.status(Response.Status.BAD_REQUEST).entity(null).build().toString();
-//        }
-//
-//        if (apiResult == null || apiResult.isEmpty() || !(apiResult.get(0).getMessage() == null)) {
-//            return Response.status(Response.Status.EXPECTATION_FAILED).entity(apiResult).build().toString();
-//        }
-//
-//        return SpritCalcHTMLResponse.htmlResponse(apiResult);
-//    }
 
 
 }

@@ -1,7 +1,7 @@
-package apis.petrolApi;
+package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.tankerKoenig;
 
 
-public class PetrolStationDat {
+public class TankerKoenigData {
 
     private String id;
     private String name;
@@ -16,7 +16,7 @@ public class PetrolStationDat {
     private String houseNumber;
     private int postCode;
 
-    public PetrolStationDat(String id, String name, String brand, String street, String placeNamer, double geographicLatitude, double geographicLongitude, double distance, double price, boolean isOpen, String houseNumber, int postCode) {
+    public TankerKoenigData(String id, String name, String brand, String street, String placeNamer, double geographicLatitude, double geographicLongitude, double distance, double price, boolean isOpen, String houseNumber, int postCode) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -31,7 +31,7 @@ public class PetrolStationDat {
         this.postCode = postCode;
     }
 
-    public PetrolStationDat() {
+    public TankerKoenigData() {
         this.id = "emptyID";
         this.name = "name";
         this.brand = "brand";

@@ -118,9 +118,32 @@
             <hr/>
         </div>
 
-        <div id="resultVerbrauch" class="row text-center"></div>
+        <div class="row">
+            <div class="col text-center">
+                <div class="text-muted">
+                    <small> Suchkriterien:
+                    </small>
+                </div>
+            </div>
 
-        <div id="resultTankmenge" class="row text-center"></div>
+        </div>
+
+        <div  class="row text-center">
+            <div id="resultVerbrauch" class="col text-center">
+            </div>
+        </div>
+
+        <div  class="row text-center">
+            <div id="resultTankmenge" class="col text-center">
+            </div>
+        </div>
+
+        <div  class="row text-center">
+            <div id="resultTyp" class="col text-center">
+            </div>
+        </div>
+
+
 
         <div class="row-fluid my-3" id="card1">
             <div class="card text-center">
@@ -187,7 +210,7 @@
 <script src="js/scripts.js"></script>
 
 <script>  //SpritCalc Animationen + API-Calls
-const useTestData = false;
+const useTestData = true;
     $("#logo").animate({opacity: '1'}, "slow",
         function () {
             $("#formContainer").animate({opacity: '1'}, "slow");
@@ -200,7 +223,7 @@ const useTestData = false;
     var exampleResponse = [
         {
             "completePrice": 10.677528,
-            "petrolStationDat": {
+            "tankerKoenigData": {
                 "brand": "OFFLINE TESTDATA Freie Automatentankstelle",
                 "distance": 6.7,
                 "geographicLatitude": 49.148681640625,
@@ -214,7 +237,7 @@ const useTestData = false;
                 "price": 1.249,
                 "street": "Gottlieb-Daimler-Str."
             },
-            "routeData": {
+            "openRouteData": {
                 "distance": 8569.1,
                 "duration": 695.1
             },
@@ -223,7 +246,7 @@ const useTestData = false;
         },
         {
             "completePrice": 10.799071999999999,
-            "petrolStationDat": {
+            "tankerKoenigData": {
                 "brand": "ARAL",
                 "distance": 3.5,
                 "geographicLatitude": 49.0664024,
@@ -237,7 +260,7 @@ const useTestData = false;
                 "price": 1.299,
                 "street": "Heilbronner Straße"
             },
-            "routeData": {
+            "openRouteData": {
                 "distance": 5088.4,
                 "duration": 475.3
             },
@@ -246,7 +269,7 @@ const useTestData = false;
         },
         {
             "completePrice": 10.997144,
-            "petrolStationDat": {
+            "tankerKoenigData": {
                 "brand": "MTB",
                 "distance": 9.9,
                 "geographicLatitude": 49.02148,
@@ -260,7 +283,7 @@ const useTestData = false;
                 "price": 1.249,
                 "street": "Bönnigheimer Str."
             },
-            "routeData": {
+            "openRouteData": {
                 "distance": 12564.3,
                 "duration": 913.8
             },
@@ -389,18 +412,18 @@ const useTestData = false;
     }
 
     function writeValuesToDOM(data) {
-        $('#resultVerbrauch').html($('#Verbrauch').val());
-        $('#resultTankmenge').html($('#Tankmenge').val());
+        $('#resultVerbrauch').html("Verbrauch: " + $('#Verbrauch').val() + " L/100km");
+        $('#resultTankmenge').html("Tankmenge: " + $('#Tankmenge').val() + " L");
+        $('#resultTyp').html("Typ: " + $('#inputSpritTyp').val());
         for (let i = 0; i < data.length; i++) {
             $('#card' + (i + 1) + " [name='header']").html(i + 1);
-            $('#card' + (i + 1) + " [name='stationName']").html(data[i].petrolStationDat.name);
+            $('#card' + (i + 1) + " [name='stationName']").html(data[i].tankerKoenigData.name);
             $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
-            $('#card' + (i + 1) + " [name='petrolCost']").html($("#inputSpritTyp") +
-                " :" + data[i].petrolStationDat.price.toFixed(2).concat(" €"));
+            $('#card' + (i + 1) + " [name='petrolCost']").html("Spritkosten: " + data[i].tankerKoenigData.price.toFixed(2).concat(" €") );
             $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
-            $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].routeData.distance / 1000).toFixed(1).concat("km"));
-            $('#card' + (i + 1) + " [name='adress']").html(data[i].petrolStationDat.placeNamer + " " + data[i].petrolStationDat.postCode);
-            $('#card' + (i + 1) + " [name='adress2']").html(data[i].petrolStationDat.street + " " + data[0].petrolStationDat.houseNumber);
+            $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].openRouteData.distance / 1000).toFixed(1).concat("km"));
+            $('#card' + (i + 1) + " [name='adress']").html(data[i].tankerKoenigData.placeNamer + " " + data[i].tankerKoenigData.postCode);
+            $('#card' + (i + 1) + " [name='adress2']").html(data[i].tankerKoenigData.street + " " + data[0].tankerKoenigData.houseNumber);
         }
     }
 

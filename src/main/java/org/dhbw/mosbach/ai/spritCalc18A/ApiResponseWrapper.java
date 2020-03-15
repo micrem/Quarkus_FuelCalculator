@@ -1,4 +1,4 @@
-package apis;
+package org.dhbw.mosbach.ai.spritCalc18A;
 
 public class ApiResponseWrapper<T> {
     private int status;

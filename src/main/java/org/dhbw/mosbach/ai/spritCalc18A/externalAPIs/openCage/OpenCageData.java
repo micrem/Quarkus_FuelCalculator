@@ -1,16 +1,13 @@
-package apis.openCageAPI;
+package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openCage;
 
-public class Geocode {
+public class OpenCageData {
     private final double lng;//Laenge
     private final double lat;//Breite
 
-    public Geocode(double lng, double lat) {
+    public OpenCageData(double lng, double lat) {
         this.lng = lng;
         this.lat = lat;
     }
-
-
-
 
     public double getLat() {
         return lat;

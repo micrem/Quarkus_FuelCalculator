@@ -1,4 +1,4 @@
-package spritCalcRESTService;
+package org.dhbw.mosbach.ai.spritCalc18A.spritCalcRESTService;
 
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.info.Contact;

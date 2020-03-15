@@ -1,4 +1,4 @@
-package spritCalcRESTService;
+package org.dhbw.mosbach.ai.spritCalc18A.spritCalcRESTService;
 
 import io.vertx.core.http.HttpServerRequest;
 import org.jboss.logging.Logger;

@@ -1,6 +1,6 @@
-package apis.openRouteAPI;
+package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openRoute;
 
-import apis.ApiResponseWrapper;
+import org.dhbw.mosbach.ai.spritCalc18A.ApiResponseWrapper;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -9,18 +9,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RouteAPI {
+public class OpenRouteConnector {
     // https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248db35efc2a3fc4c6386a52907a6cb40f0&start=9.15130,49.35398&end=9.15175,49.35808
     private static final String apiBaseUrl = "https://api.openrouteservice.org/v2";
     private static final String apiKey = "5b3ce3597851110001cf6248db35efc2a3fc4c6386a52907a6cb40f0";
     private static final String service = "directions";
     private static final String meansOfTransportation = "driving-car";
 
-    public RouteAPI() {
+    public OpenRouteConnector() {
     }
 
 
-    public ApiResponseWrapper<RouteData> calculateDistance(double startGeographicLatitude, double startGeographicLongitude, double endGeographicLatitude, double endGeographicLongitude) {
+    public ApiResponseWrapper<OpenRouteData> calculateDistance(double startGeographicLatitude, double startGeographicLongitude, double endGeographicLatitude, double endGeographicLongitude) {
 
         HttpURLConnection connURL = null;
 
@@ -68,8 +68,8 @@ public class RouteAPI {
         double distance = jsonObjectDistDura.getDouble("distance");
         double duration = jsonObjectDistDura.getDouble("duration");
 
-        RouteData routeData = new RouteData(distance, duration);
-        return new ApiResponseWrapper<RouteData>(200,"alles gut", routeData);
+        OpenRouteData openRouteData = new OpenRouteData(distance, duration);
+        return new ApiResponseWrapper<OpenRouteData>(200,"alles gut", openRouteData);
 
 
     }

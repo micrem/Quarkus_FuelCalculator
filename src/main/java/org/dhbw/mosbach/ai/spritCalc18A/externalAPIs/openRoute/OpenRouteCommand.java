@@ -1,6 +1,6 @@
-package apis.openRouteAPI;
+package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openRoute;
 
-import apis.ApiResponseWrapper;
+import org.dhbw.mosbach.ai.spritCalc18A.ApiResponseWrapper;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
@@ -8,13 +8,13 @@ import com.netflix.hystrix.HystrixThreadPoolProperties;
 
 import java.util.Arrays;
 
-public class OpenRouteCommand extends HystrixCommand<ApiResponseWrapper<RouteData>> {
+public class OpenRouteCommand extends HystrixCommand<ApiResponseWrapper<OpenRouteData>> {
     private double startLat;
     private double startLng;
     private double endLat;
     private double endLng;
 
-    private RouteAPI openRouteClient;
+    private OpenRouteConnector openRouteClient;
 
 
     public OpenRouteCommand(double startLat, double startLng, double endLat, double endLng) {
@@ -27,18 +27,18 @@ public class OpenRouteCommand extends HystrixCommand<ApiResponseWrapper<RouteDat
         this.startLng = startLng;
         this.endLat = endLat;
         this.endLng = endLng;
-        openRouteClient = new RouteAPI();
+        openRouteClient = new OpenRouteConnector();
     }
 
     @Override
-    protected ApiResponseWrapper<RouteData> run() throws Exception {
-        ApiResponseWrapper<RouteData> routeData = openRouteClient.calculateDistance(startLat, startLng, endLat, endLng);
+    protected ApiResponseWrapper<OpenRouteData> run() throws Exception {
+        ApiResponseWrapper<OpenRouteData> routeData = openRouteClient.calculateDistance(startLat, startLng, endLat, endLng);
         System.out.println("OpenRouteCommand call, params:" + Arrays.asList(startLat, startLng, endLat, endLng) + " result: " + routeData.getResponseData().getDistance());
         return routeData;
     }
 
     @Override
-    protected ApiResponseWrapper<RouteData> getFallback() {
+    protected ApiResponseWrapper<OpenRouteData> getFallback() {
         return new ApiResponseWrapper<>(200,"fallback",null);
     }
 
