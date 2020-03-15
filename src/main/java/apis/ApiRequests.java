@@ -125,6 +125,13 @@ public class ApiRequests {
         ApiRequestData apiRequestData1 = new ApiRequestData(petrolStationDat1,routeData1,10.79,0.685,UUID.randomUUID());
         ArrayList<ApiRequestData> apiRequestDataArrayList = new ArrayList<>();
         apiRequestDataArrayList.add(apiRequestData1);
+        apiRequestDataArrayList.add(apiRequestData1);
+        apiRequestDataArrayList.add(apiRequestData1);
+
+
+
+
+
 
         return apiRequestDataArrayList;
 

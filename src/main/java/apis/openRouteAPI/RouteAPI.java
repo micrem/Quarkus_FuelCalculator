@@ -40,7 +40,7 @@ public class RouteAPI {
         try {
             URL url = new URL(stringBuilder.toString());
             connURL = (HttpURLConnection) url.openConnection();
-            // if (connURL.getResponseCode() == 200) return new ApiResponseWrapper<>(404,"RouteAPI Http response not 200",null);
+            //if (connURL.getResponseCode() == 200) return new ApiResponseWrapper<>(404,"RouteAPI Http response not 200",null);
             if (connURL.getResponseCode() != 200) return new ApiResponseWrapper<>(connURL.getResponseCode(),"RouteAPI Http response not 200",null);
 
             InputStreamReader inputStreamReader = new InputStreamReader(connURL.getInputStream());
