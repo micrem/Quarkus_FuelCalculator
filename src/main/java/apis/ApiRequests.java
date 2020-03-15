@@ -119,7 +119,7 @@ public class ApiRequests {
         return apiRequestDataArrayList;
     }
 
-    private ArrayList<ApiRequestData> getFallBackData(String reason){
+    public ArrayList<ApiRequestData> getFallBackData(String reason){
         PetrolStationDat petrolStationDat1 = new PetrolStationDat(null,"FallbackDaten: "+reason + "   Freie Automatentankstelle","Freie Tankstelle","Musterstarsee","",49.148681640625,8.9788904190063,6.7,1.249,true,"14",75050);
         RouteData routeData1 = new RouteData(8569.1,695.1);
         ApiRequestData apiRequestData1 = new ApiRequestData(petrolStationDat1,routeData1,10.79,0.685,UUID.randomUUID());

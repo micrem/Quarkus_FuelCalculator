@@ -347,7 +347,7 @@ const useTestData = false;
         fetch("")
             //.then((ret) => ret.json())
             .then(ret => {
-                responseSpritApi = ret; //save
+                responseSpritApi = ret; //save API call response
                 return exampleResponse; //use only TestData
             })
             .then( writeValuesToDOM ).then(async function () {

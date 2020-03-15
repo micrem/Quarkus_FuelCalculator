@@ -57,6 +57,18 @@ public class SpritCalcREST {
         return Response.ok(apiResult, MediaType.APPLICATION_JSON).build();
     }
 
+    @Path("testData")
+    @GET
+    //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Operation(summary = "SpritCalcAPI GET Path",
+            description = "SpritCalcAPI Service")
+    public Response spritCalcAPI() {
+        System.out.printf("spritCalcAPI TestData called");
+        ApiRequests spritCalcService = new ApiRequests();
+        List<ApiRequestData> apiResult = spritCalcService.getFallBackData("API Test Betrieb");
+        return Response.ok(apiResult, MediaType.APPLICATION_JSON).build();
+    }
+
 //    @GET
 //    @Produces(MediaType.TEXT_HTML)
 //    @Path("/getHTMLtest/{path}")
