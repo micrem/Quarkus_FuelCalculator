@@ -128,14 +128,7 @@ public class SpritCalcBL {
         spritCalcBLDataArrayList.add(spritCalcBLData1);
         spritCalcBLDataArrayList.add(spritCalcBLData1);
 
-
-
-
-
-
         return spritCalcBLDataArrayList;
-
-
     }
 
 
