@@ -48,7 +48,7 @@ public class PetrolStationApi {
         try {
             URL url = new URL(stringBuilder.toString());
             connURL = (HttpURLConnection) url.openConnection();
-            if (connURL.getResponseCode() != 200) return new ApiResponseWrapper<>(connURL.getResponseCode(),"HttP response not 200",null);
+            if (connURL.getResponseCode() != 200) return new ApiResponseWrapper<>(connURL.getResponseCode(),"PetrolAPI Http response not 200",null);
             InputStreamReader inputStreamReader = new InputStreamReader(connURL.getInputStream());
             int read;
             char[] buff = new char[1024];
@@ -69,7 +69,7 @@ public class PetrolStationApi {
         }
 
         //System.out.println(apiResultJson);
-        //TODO: CHECK ERRORS in response
+
         JSONObject jsonObject = new JSONObject(apiResultJson.toString());
         //System.out.println(jsonObject);
         JSONArray petrolStationArray = jsonObject.getJSONArray("stations");

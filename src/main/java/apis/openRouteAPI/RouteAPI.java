@@ -20,7 +20,7 @@ public class RouteAPI {
     }
 
 
-    public RouteData calculateDistance(double startGeographicLatitude, double startGeographicLongitude, double endGeographicLatitude, double endGeographicLongitude) {
+    public ApiResponseWrapper<RouteData> calculateDistance(double startGeographicLatitude, double startGeographicLongitude, double endGeographicLatitude, double endGeographicLongitude) {
 
         HttpURLConnection connURL = null;
 
@@ -40,6 +40,9 @@ public class RouteAPI {
         try {
             URL url = new URL(stringBuilder.toString());
             connURL = (HttpURLConnection) url.openConnection();
+            // if (connURL.getResponseCode() == 200) return new ApiResponseWrapper<>(404,"RouteAPI Http response not 200",null);
+            if (connURL.getResponseCode() != 200) return new ApiResponseWrapper<>(connURL.getResponseCode(),"RouteAPI Http response not 200",null);
+
             InputStreamReader inputStreamReader = new InputStreamReader(connURL.getInputStream());
             int read;
             char[] buff = new char[1024];
@@ -66,8 +69,8 @@ public class RouteAPI {
         double duration = jsonObjectDistDura.getDouble("duration");
 
         RouteData routeData = new RouteData(distance, duration);
+        return new ApiResponseWrapper<RouteData>(200,"alles gut", routeData);
 
-        return routeData;
 
     }
 

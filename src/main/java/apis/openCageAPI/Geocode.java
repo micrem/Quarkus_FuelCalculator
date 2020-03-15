@@ -10,6 +10,8 @@ public class Geocode {
     }
 
 
+
+
     public double getLat() {
         return lat;
     }

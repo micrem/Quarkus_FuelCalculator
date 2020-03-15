@@ -30,7 +30,7 @@ public class PetrolStationCommand extends HystrixCommand<ApiResponseWrapper<List
     }
 
     @Override
-    protected ApiResponseWrapper<List<PetrolStationDat>>  run() throws Exception {
+    protected ApiResponseWrapper<List<PetrolStationDat>> run() throws Exception {
         ApiResponseWrapper<List<PetrolStationDat>> ret = petrolStationApi.search(geographicLatitude, geographicLongitude, petrolTyp);
         System.out.println("PetrolStationCommand call, params:" + Arrays.asList(geographicLatitude, geographicLongitude, petrolTyp) + " result: " + ret.getResponseData().size() + "found");
         return ret;

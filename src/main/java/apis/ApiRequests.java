@@ -3,11 +3,9 @@ package apis;
 import apis.openCageAPI.Geocode;
 import apis.openCageAPI.OCAPI;
 import apis.openCageAPI.OpenCageCommand;
-import apis.openRouteAPI.OpenRouteCommand;
 import apis.openRouteAPI.RouteAPI;
 import apis.openRouteAPI.RouteData;
 import apis.petrolApi.PetrolStationApi;
-import apis.petrolApi.PetrolStationCommand;
 import apis.petrolApi.PetrolStationDat;
 import apis.petrolApi.PetrolTyp;
 import com.google.common.collect.Multimap;
@@ -31,23 +29,28 @@ public class ApiRequests {
         OpenCageCommand ocCommand = new OpenCageCommand(streetNum, street, postalCode, city);
         //Geocode geocodePosition = ocCommand.execute();
         OCAPI openCageAPI = new OCAPI();
-        Geocode geocodePosition = openCageAPI.returnGeocodeForAddressInput(streetNum, street, postalCode, city);
-        LOG.info("OpenCage result:" + geocodePosition.getLng() + " " + geocodePosition.getLat());
+        ApiResponseWrapper<Geocode> geocodePosition = openCageAPI.returnGeocodeForAddressInput(streetNum, street, postalCode, city);
+        if (geocodePosition.getStatus()!=200){
+            return getFallBackData("OCAPI Http response not 200");
+        }
+        LOG.info("OpenCage result:" + geocodePosition.getResponseData().getLng() + " " + geocodePosition.getResponseData().getLat());
         circuitStatus = ocCommand.isCircuitBreakerOpen() ? "Open" : "Closed";
         if (ocCommand.isResponseFromFallback())
             LOG.info("OpenCageCommand returned fallback! called with: " + Arrays.asList(streetNum, street, postalCode, city));
 
-        if (geocodePosition.getLat() == -1) {
+        if (geocodePosition.getResponseData().getLat() == -1) {
             defaultReturn.setMessage("Fehler Geocode: konnte keinen Geocode zur Adresse finden!");
+
             if (circuitStatus.equals("Open"))
                 defaultReturn.setMessage(defaultReturn.getMessage() + " Circuitbreaker: Open");
-            return Arrays.asList(defaultReturn);
+            //return Arrays.asList(defaultReturn);
+            return getFallBackData("Fehler Geocode: konnte keinen Geocode zur Adresse finden!");
         }
 
         // mit GPS Koordinate Tankstellsuche durchführen
-        ApiResponseWrapper<List<PetrolStationDat>> petrolStationDatsWrapper = new PetrolStationApi().search(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp);
+        ApiResponseWrapper<List<PetrolStationDat>> petrolStationDatsWrapper = new PetrolStationApi().search(geocodePosition.getResponseData().getLat(), geocodePosition.getResponseData().getLng(), petrolTyp);
         if(petrolStationDatsWrapper.getStatus()!=200) {
-            //return default object thingy / wrapper
+            return  getFallBackData("PetrolAPI Http response not 200");
         }
         List<PetrolStationDat> petrolStationDats = petrolStationDatsWrapper.getResponseData();
         //PetrolStationCommand petrolStationCommand = new PetrolStationCommand(geocodePosition.getLat(), geocodePosition.getLng(), petrolTyp);
@@ -57,6 +60,7 @@ public class ApiRequests {
 //        circuitStatus = petrolStationCommand.isCircuitBreakerOpen() ? "Open" : "Closed";
         if (petrolStationDats.isEmpty()) {
             System.out.println("petrolStationDats.isEmpty() true");
+            return getFallBackData("Es konnten keine Tankstellen gefunden werden");
         } else if (petrolStationDats.get(0).getId().equals("emptyID")) {
             System.out.println("petrolStationDats.get(0).getId()=" + petrolStationDats.get(0).getId());
         }
@@ -69,14 +73,18 @@ public class ApiRequests {
         }
 
         System.out.println("found " + petrolStationDats.size() + " stations");
-        wegstreckeErmitteln(petrolVolume, petrolUsageCar, geocodePosition, petrolStationDats);
+        boolean fallback= wegstreckeErmitteln(petrolVolume, petrolUsageCar, geocodePosition.getResponseData(), petrolStationDats);
+        if (fallback){
+            return getFallBackData("RouteAPI Http response not 200");
+        }
 
         ArrayList<ApiRequestData> apiRequestDataArrayList = getTop3CheapestStations();
 
         return apiRequestDataArrayList;
     }
 
-    private void wegstreckeErmitteln(double petrolVolume, double petrolUsageCar, Geocode geocodePosition, List<PetrolStationDat> petrolStationDats) {
+    private boolean wegstreckeErmitteln(double petrolVolume, double petrolUsageCar, Geocode geocodePosition, List<PetrolStationDat> petrolStationDats) {
+
         for (int i = 0; i < petrolStationDats.size(); i++) {
 //            OpenRouteCommand orCommand = new OpenRouteCommand(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude());
 //            RouteData routeData = orCommand.execute();
@@ -84,16 +92,20 @@ public class ApiRequests {
 //            if (orCommand.isResponseFromFallback())
 //                LOG.info("OpenRouteCommand returned fallback! called with: " + Arrays.asList(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude()));
             RouteAPI routeAPI = new RouteAPI();
-            RouteData routeData = routeAPI.calculateDistance(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude());
+            ApiResponseWrapper<RouteData> routeData = routeAPI.calculateDistance(geocodePosition.getLat(), geocodePosition.getLng(), petrolStationDats.get(i).getGeographicLatitude(), petrolStationDats.get(i).getGeographicLongitude());
+            if (routeData.getStatus()!=200){
+                return true;
+            }
             // Ausrechnen vom Gesamtpreis
             double totalPrice;
-            double travelcost = (petrolUsageCar * (routeData.getDistance() / 100000));
+            double travelcost = (petrolUsageCar * (routeData.getResponseData().getDistance() / 100000));
             totalPrice = (petrolStationDats.get(i).getPrice() * petrolVolume) + travelcost;
             UUID uuid = UUID.randomUUID();
-            ApiRequestData apiRequestData = new ApiRequestData(petrolStationDats.get(i), routeData, totalPrice, travelcost, uuid);
+            ApiRequestData apiRequestData = new ApiRequestData(petrolStationDats.get(i), routeData.getResponseData(), totalPrice, travelcost, uuid);
             apiRequestMultimapUUID.put(totalPrice, uuid);
             uuidApiRequestDataHashmap.put(uuid, apiRequestData);
         }
+        return false;
     }
 
     private ArrayList<ApiRequestData> getTop3CheapestStations() {
@@ -105,6 +117,18 @@ public class ApiRequests {
             apiRequestDataArrayList.add(uuidApiRequestDataHashmap.get(mapData.getValue()));
         }
         return apiRequestDataArrayList;
+    }
+
+    private ArrayList<ApiRequestData> getFallBackData(String reason){
+        PetrolStationDat petrolStationDat1 = new PetrolStationDat(null,"FallbackDaten: "+reason + "   Freie Automatentankstelle","Freie Tankstelle","Musterstarsee","",49.148681640625,8.9788904190063,6.7,1.249,true,"14",75050);
+        RouteData routeData1 = new RouteData(8569.1,695.1);
+        ApiRequestData apiRequestData1 = new ApiRequestData(petrolStationDat1,routeData1,10.79,0.685,UUID.randomUUID());
+        ArrayList<ApiRequestData> apiRequestDataArrayList = new ArrayList<>();
+        apiRequestDataArrayList.add(apiRequestData1);
+
+        return apiRequestDataArrayList;
+
+
     }
 
 

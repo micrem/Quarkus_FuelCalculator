@@ -1,5 +1,6 @@
 package apis.openRouteAPI;
 
+import apis.ApiResponseWrapper;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
@@ -7,7 +8,7 @@ import com.netflix.hystrix.HystrixThreadPoolProperties;
 
 import java.util.Arrays;
 
-public class OpenRouteCommand extends HystrixCommand<RouteData> {
+public class OpenRouteCommand extends HystrixCommand<ApiResponseWrapper<RouteData>> {
     private double startLat;
     private double startLng;
     private double endLat;
@@ -30,15 +31,15 @@ public class OpenRouteCommand extends HystrixCommand<RouteData> {
     }
 
     @Override
-    protected RouteData run() throws Exception {
-        final RouteData routeData = openRouteClient.calculateDistance(startLat, startLng, endLat, endLng);
-        System.out.println("OpenRouteCommand call, params:" + Arrays.asList(startLat, startLng, endLat, endLng) + " result: " + routeData.getDistance());
+    protected ApiResponseWrapper<RouteData> run() throws Exception {
+        ApiResponseWrapper<RouteData> routeData = openRouteClient.calculateDistance(startLat, startLng, endLat, endLng);
+        System.out.println("OpenRouteCommand call, params:" + Arrays.asList(startLat, startLng, endLat, endLng) + " result: " + routeData.getResponseData().getDistance());
         return routeData;
     }
 
     @Override
-    protected RouteData getFallback() {
-        return new RouteData(-1, -1);
+    protected ApiResponseWrapper<RouteData> getFallback() {
+        return new ApiResponseWrapper<>(200,"fallback",null);
     }
 
 }

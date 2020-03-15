@@ -1,5 +1,6 @@
 package apis.openCageAPI;
 
+import apis.ApiResponseWrapper;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -16,7 +17,7 @@ public class OCAPI {
     private String apikey = "5c8ac5624e884cbc988ba9a5d3a23520";
     private String country = "Deutschland";//steht fest, da Tankerkoenig API nur fuer Deutschland vorgesehen ist
 
-    public Geocode returnGeocodeForAddressInput(int streetNum, String street, int postalCode, String city) throws IOException {
+    public ApiResponseWrapper<Geocode> returnGeocodeForAddressInput(int streetNum, String street, int postalCode, String city) throws IOException {
         //HOW TO USE: OCAPI.returnGeocodeForAddressInput(entsprechende Variablen)
         //PLZ ist in der Tat optional, API sucht nach Stadtnamen
         String encodedStreet = "";
@@ -41,6 +42,7 @@ public class OCAPI {
         //add request header
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         int responseCode = con.getResponseCode();
+        if (responseCode != 200) return new ApiResponseWrapper<>(responseCode,"OCAPI Http response not 200",null);
         System.out.println("\nSending 'GET' request to URL : " + (urlBuilder.toString()));
         System.out.println("Response Code : " + responseCode);
         BufferedReader in = new BufferedReader(
@@ -59,7 +61,7 @@ public class OCAPI {
         JSONObject locationJSON = myResponse.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
         Geocode geocodeResult = new Geocode((locationJSON.getDouble("lng")), (locationJSON.getDouble("lat")));
         System.out.println("OpenCage result: " + geocodeResult.getLng() + "  " + geocodeResult.getLat());
-        return geocodeResult;
+        return new ApiResponseWrapper<Geocode>(200,"alles gut", geocodeResult);
     }
 
 

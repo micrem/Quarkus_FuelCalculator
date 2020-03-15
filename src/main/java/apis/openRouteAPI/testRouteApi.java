@@ -1,5 +1,7 @@
 package apis.openRouteAPI;
 
+import apis.ApiResponseWrapper;
+
 public class testRouteApi {
 
     public static void main(String[] args) {
@@ -8,10 +10,10 @@ public class testRouteApi {
         double endLat = 49.358089;
         double endLng = 9.15175;
         RouteAPI routeAPI = new RouteAPI();
-        System.out.println("default distance: " + routeAPI.calculateDistance(startLat, startLng, endLat, endLng).getDistance());
+        System.out.println("default distance: " + routeAPI.calculateDistance(startLat, startLng, endLat, endLng).getResponseData().getDistance());
 
         OpenRouteCommand orCommand = new OpenRouteCommand(startLat, startLng, endLat, endLng);
-        RouteData resp = orCommand.execute();
-        System.out.println("Hysterix distance: " + resp.getDistance());
+        ApiResponseWrapper<RouteData> resp = orCommand.execute();
+        System.out.println("Hysterix distance: " + resp.getResponseData());
     }
 }
