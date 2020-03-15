@@ -44,7 +44,7 @@ public class PetrolStationApi {
         stringBuilder.append("&apikey=" + apiKey);
 
         // nur zum test
-        //System.out.println(stringBuilder);
+        System.out.println(stringBuilder);
         try {
             URL url = new URL(stringBuilder.toString());
             connURL = (HttpURLConnection) url.openConnection();
@@ -56,7 +56,7 @@ public class PetrolStationApi {
                 apiResultJson.append(buff, 0, read);
             }
             returnObj = new JSONObject(apiResultJson.toString());
-            // muss noch verbessert werden*********************** Siehe FreeTimeActicityExplorer
+
         } catch (MalformedURLException e) {
             System.err.println("Fehler bei PetrolStation API URL" + e);
             e.printStackTrace();
@@ -83,7 +83,7 @@ public class PetrolStationApi {
                 if (jsonObj.isNull("lng")) {continue;}
                 if (jsonObj.isNull("dist")) {continue;}
                 if (jsonObj.isNull("isOpen")) {continue;}
-                if (jsonObj.isNull("postCod")) {continue;}
+                if (jsonObj.isNull("postCode")) {continue;}
 
 
                 String id = jsonObj.getString("id");
