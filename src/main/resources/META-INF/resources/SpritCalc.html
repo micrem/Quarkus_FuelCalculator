@@ -210,7 +210,7 @@
 <script src="js/scripts.js"></script>
 
 <script>  //SpritCalc Animationen + API-Calls
-const useTestData = true;
+const useTestData = false;
     $("#logo").animate({opacity: '1'}, "slow",
         function () {
             $("#formContainer").animate({opacity: '1'}, "slow");
@@ -419,7 +419,7 @@ const useTestData = true;
             $('#card' + (i + 1) + " [name='header']").html(i + 1);
             $('#card' + (i + 1) + " [name='stationName']").html(data[i].tankerKoenigData.name);
             $('#card' + (i + 1) + " [name='totalCost']").html("Gesamt: " + data[i].completePrice.toFixed(2).concat(" €"));
-            $('#card' + (i + 1) + " [name='petrolCost']").html("Spritkosten: " + data[i].tankerKoenigData.price.toFixed(2).concat(" €") );
+            $('#card' + (i + 1) + " [name='petrolCost']").html("Spritkosten: " + data[i].tankerKoenigData.price.toFixed(2).concat(" €/L") );
             $('#card' + (i + 1) + " [name='routeCost']").html("Fahrkosten: " + data[i].travelcost.toFixed(2).concat(" €"));
             $('#card' + (i + 1) + " [name='distance']").html("Entfernung: " + (data[i].openRouteData.distance / 1000).toFixed(1).concat("km"));
             $('#card' + (i + 1) + " [name='adress']").html(data[i].tankerKoenigData.placeNamer + " " + data[i].tankerKoenigData.postCode);
