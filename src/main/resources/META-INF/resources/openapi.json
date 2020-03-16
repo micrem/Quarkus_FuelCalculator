@@ -95,7 +95,6 @@
     "schemas": {
       "PetrolTyp": {
         "enum": [
-          "all",
           "diesel",
           "e10",
           "e5"
