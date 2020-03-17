@@ -5,6 +5,9 @@ import org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openRoute.OpenRouteData;
 
 import java.util.UUID;
 
+/**
+ * DatenOpjkete für das Ergebniss der Suche
+ */
 public class SpritCalcBLData {
     private final TankerKoenigData tankerKoenigData;
     private final OpenRouteData openRouteData;

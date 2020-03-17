@@ -13,6 +13,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Api implimentierung um Umkreis-Tankstellensuche durchzuführen
+ */
 public class TankerKoenigConnector {
     // https://creativecommons.tankerkoenig.de/json/list.php?lat=52.521&lng=13.438&rad=1.5&sort=dist&type=all&apikey=00000000-0000-0000-0000-000000000002
 
@@ -29,6 +32,13 @@ public class TankerKoenigConnector {
 
     }
 
+    /**
+     * UmkreisTankstellensuche durchführen
+     * @param geographicLatitude Startpunkt geographische Breite
+     * @param geographicLongitude Startpunkt geographische Laenge
+     * @param petrolTyp Benzintyp
+     * @return  Liefert ApiResponseWrapper Klasse mit TankerKoeningData zurück
+     */
     public ApiResponseWrapper<List<TankerKoenigData>> search(double geographicLatitude, double geographicLongitude, PetrolTyp petrolTyp) {
         petrolStationDataList = new ArrayList<>();
 

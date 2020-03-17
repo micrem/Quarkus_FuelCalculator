@@ -1,5 +1,9 @@
 package org.dhbw.mosbach.ai.spritCalc18A;
 
+/**
+ * Wrapper Klasse für die DatenOpjekte der exterenen API Datenobjekte mit HTTP Status und String Message zur Fehlerbehandlung
+ * @param <T> API Datenopjekt bzw. Opjekte
+ */
 public class ApiResponseWrapper<T> {
     private int status;
     private String message;

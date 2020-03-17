@@ -1,5 +1,9 @@
 package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openRoute;
 
+
+/**
+ * DatenOpjekt zur OpenRouteAPI also Fahrstrecke und Fahrzeit
+ */
 public class OpenRouteData {
     private final double distance;
     private final double duration;

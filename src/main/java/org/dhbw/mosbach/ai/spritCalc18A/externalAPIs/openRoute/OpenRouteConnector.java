@@ -9,6 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Api implimentierung zu aus zwei GPS Koordinaten die Distanz der Fahrestrecke zu ermitteln
+ */
 public class OpenRouteConnector {
     // https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248db35efc2a3fc4c6386a52907a6cb40f0&start=9.15130,49.35398&end=9.15175,49.35808
     private static final String apiBaseUrl = "https://api.openrouteservice.org/v2";
@@ -19,7 +22,14 @@ public class OpenRouteConnector {
     public OpenRouteConnector() {
     }
 
-
+    /**
+     * Zwei GPS Koordinaten ind Distanz Fahrstrecke umwandelen
+     * @param startGeographicLatitude   Startpunkt geographische Breite
+     * @param startGeographicLongitude  Startpunkt geographische Länge
+     * @param endGeographicLatitude Zielpunkt geographische Breite
+     * @param endGeographicLongitude Zielpunkt geographische Länge
+     * @return Liefert ApiResponseWrapper Klasse mit OpenRouteData zurück
+     */
     public ApiResponseWrapper<OpenRouteData> calculateDistance(double startGeographicLatitude, double startGeographicLongitude, double endGeographicLatitude, double endGeographicLongitude) {
 
         HttpURLConnection connURL = null;

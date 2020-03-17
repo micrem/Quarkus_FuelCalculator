@@ -8,6 +8,11 @@ import com.netflix.hystrix.HystrixThreadPoolProperties;
 
 import java.util.Arrays;
 
+/**
+ * Ein mittels Hysterix umgesetzter Circuit-Breaker wurde zunächst mit einer Kapselung der Service-Aufrufe in Command-Objekte implementiert,
+ * musste aber wieder entfernt werden. Aus nicht geklärtem Grund wurde von dem Command-Object immer das Fallback-Ergebnis empfangen,
+ * obwohl der Aufruf selbst korrekt verlief und intern die erwarteten Ergebnisse lieferte. Ein möglicher Grund dafür wäre die asynchrone Verarbeitung der Eingaben innerhalb des Hysterix-Frameworks
+ */
 public class OpenCageCommand extends HystrixCommand<ApiResponseWrapper<OpenCageData>> {
     private int streetNum;
     private String street;

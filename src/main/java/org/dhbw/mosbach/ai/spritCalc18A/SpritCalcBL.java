@@ -15,13 +15,27 @@ import org.jboss.logging.Logger;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Ausführen aller exterenen Apis + Brechnunglogik + Eventuelle FallBack Daten zurueckliefern
+ */
 public class SpritCalcBL {
     private static final Logger LOG = Logger.getLogger(SpritCalcBL.class);
 
     private Multimap<Double, UUID> apiRequestMultimapUUID = TreeMultimap.create();
     private Map<UUID, SpritCalcBLData> uuidApiRequestDataHashmap = new HashMap<>();
 
-
+    /**
+     * Ausführen der externen Apis und drei Guenstigeste Tankstelen zurückliefern
+     * @param street    Standort Strassenname
+     * @param streetNum Standort Strassennummer
+     * @param postalCode  Standort  PLZ
+     * @param city Standort Stadt
+     * @param petrolTyp Benzintyp nach dem gesucht wird
+     * @param petrolVolume  Menge des zu erwerbende Kraftstoffes in Littern
+     * @param petrolUsageCar    Verbrauch des eignen Autos  in Littern pro 100 km
+     * @return Liefert eine Liste mit den drei guenstigsten Tankstellen zurueck
+     * @throws IOException
+     */
     public List<SpritCalcBLData> apiSearchStart(String street, int streetNum, int postalCode, String city, PetrolTyp petrolTyp, double petrolVolume, double petrolUsageCar) throws IOException {
         String circuitStatus;
         SpritCalcBLData defaultReturn = new SpritCalcBLData(null, null, 0, 0, null);

@@ -4,6 +4,9 @@ import org.dhbw.mosbach.ai.spritCalc18A.ApiResponseWrapper;
 
 import java.util.List;
 
+/**
+ * Zum manuellen testen der TankerkoeningAPI
+ */
 public class TankerKoenigTest {
     public static void main(String[] args) {
         TankerKoenigConnector tankerKoenigConnectorMosbach = new TankerKoenigConnector();

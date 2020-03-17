@@ -10,6 +10,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+
+/**
+ * Api implimentierung zur Adresse in GPS umwandelen
+ */
 public class OpenCageConnector {
 
     private static final String urlComma = "%2C";
@@ -17,6 +21,15 @@ public class OpenCageConnector {
     private String apikey = "5c8ac5624e884cbc988ba9a5d3a23520";
     private String country = "Deutschland";//steht fest, da Tankerkoenig API nur fuer Deutschland vorgesehen ist
 
+    /**
+     * Adresse in GPS umwandelen
+     * @param streetNum Straßennummer eingeben
+     * @param street    Straßennamen eingeben
+     * @param postalCode    PLZ eingeben
+     * @param city  Stadtnamen einegeben
+     * @return  Liefert ApiResponseWrapper Klasse mit OpenCageDate zurück
+     * @throws IOException
+     */
     public ApiResponseWrapper<OpenCageData> returnGeocodeForAddressInput(int streetNum, String street, int postalCode, String city) throws IOException {
         //HOW TO USE: OCAPI.returnGeocodeForAddressInput(entsprechende Variablen)
         //PLZ ist in der Tat optional, API sucht nach Stadtnamen

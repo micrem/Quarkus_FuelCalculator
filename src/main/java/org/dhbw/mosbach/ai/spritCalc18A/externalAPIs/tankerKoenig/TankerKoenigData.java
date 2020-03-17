@@ -1,6 +1,9 @@
 package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.tankerKoenig;
 
 
+/**
+ * Datenopjekt zur Tankstellensuche (fuer jede gefundenen Tankstellen die Stammdaten und der Benzinpreis)
+ */
 public class TankerKoenigData {
 
     private String id;

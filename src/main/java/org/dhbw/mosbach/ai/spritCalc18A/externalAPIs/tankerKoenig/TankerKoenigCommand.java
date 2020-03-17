@@ -9,6 +9,11 @@ import com.netflix.hystrix.HystrixThreadPoolProperties;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Ein mittels Hysterix umgesetzter Circuit-Breaker wurde zunächst mit einer Kapselung der Service-Aufrufe in Command-Objekte implementiert,
+ * musste aber wieder entfernt werden. Aus nicht geklärtem Grund wurde von dem Command-Object immer das Fallback-Ergebnis empfangen,
+ * obwohl der Aufruf selbst korrekt verlief und intern die erwarteten Ergebnisse lieferte. Ein möglicher Grund dafür wäre die asynchrone Verarbeitung der Eingaben innerhalb des Hysterix-Frameworks
+ */
 public class TankerKoenigCommand extends HystrixCommand<ApiResponseWrapper<List<TankerKoenigData>> > {
     double geographicLatitude;
     double geographicLongitude;

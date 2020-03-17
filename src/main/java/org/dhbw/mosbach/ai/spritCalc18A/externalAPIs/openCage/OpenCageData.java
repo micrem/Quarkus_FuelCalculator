@@ -1,5 +1,9 @@
 package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openCage;
 
+
+/**
+ * DatenOpjeket zur OpenCageAPI (also GPS Koordinate)
+ */
 public class OpenCageData {
     private final double lng;//Laenge
     private final double lat;//Breite

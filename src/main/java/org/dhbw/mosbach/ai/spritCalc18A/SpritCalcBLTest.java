@@ -5,6 +5,9 @@ import org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.tankerKoenig.PetrolTyp;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Zum manuellen Testen der der implimentieren Logik
+ */
 public class SpritCalcBLTest {
 
     public static void main(String[] args) throws IOException {

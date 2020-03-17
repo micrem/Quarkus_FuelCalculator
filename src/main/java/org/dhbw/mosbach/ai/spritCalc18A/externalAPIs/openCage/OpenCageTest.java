@@ -4,6 +4,9 @@ import org.dhbw.mosbach.ai.spritCalc18A.ApiResponseWrapper;
 
 import java.io.IOException;
 
+/**
+ * Zum manuellen testen der OpenCageAPI
+ */
 public class OpenCageTest {
     public static void main(String[] args) throws IOException {
         OpenCageConnector openCageAPI = new OpenCageConnector();

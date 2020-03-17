@@ -2,6 +2,9 @@ package org.dhbw.mosbach.ai.spritCalc18A.externalAPIs.openRoute;
 
 import org.dhbw.mosbach.ai.spritCalc18A.ApiResponseWrapper;
 
+/**
+ * Zum manuellen testen der OpenCageAPI
+ */
 public class OpenRouteTest {
 
     public static void main(String[] args) {
